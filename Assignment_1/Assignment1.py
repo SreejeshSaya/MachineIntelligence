@@ -14,7 +14,6 @@ def get_entropy_of_dataset(df):
 	target =  list(df.iloc[:, -1])
 	size = len(target)
 	categ = set(target)
-	num_of_categ = len(categ) 
 	for i in categ:
 		p = target.count(i)/size
 		entropy = entropy + (-p*np.log2(p))
