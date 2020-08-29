@@ -64,6 +64,12 @@ def get_selected_attribute(df):
 	example : ({'A':0.123,'B':0.768,'C':1.23} , 'C')
 	'''
 
+	attributes = list(df.columns)
+	attributes = attributes[ : -1]
+	for attribute in attributes:
+		information_gains[attribute] = get_information_gain(df, attribute)
+	
+	selected_column = max(information_gains, key=information_gains.get)
 
 	return (information_gains,selected_column)
 
