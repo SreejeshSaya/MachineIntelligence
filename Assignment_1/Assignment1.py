@@ -11,6 +11,7 @@ import random
 
 def get_entropy_of_dataset(df):
 	entropy = 0
+	eps = np.finfo(float).eps
 	target =  list(df.iloc[:, -1])
 	size = len(target)
 	categ = set(target)
