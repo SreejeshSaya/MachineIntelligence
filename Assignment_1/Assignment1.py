@@ -16,7 +16,10 @@ def get_entropy_of_dataset(df):
 	categ = set(target)
 	for i in categ:
 		p = target.count(i)/size
-		entropy = entropy + (-p*np.log2(p))
+		if p!=0:
+			entropy = entropy + (-p*np.log2(p))
+		else :
+			continue
 	return entropy
 
 
