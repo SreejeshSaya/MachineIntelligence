@@ -73,7 +73,7 @@ def test_case():
     print('act IG : ', get_information_gain(df,'act')==0.4199730940219749)#0.4199730940219749
     print('age avg info : ', get_entropy_of_attribute(df,'age')==0.5509775004326937) #0.5509775004326937
     print('age IG : ', get_information_gain(df,'age')==0.4199730940219749)#0.4199730940219749
-    print(get_selected_attribute(df)) #act/age
+    print(get_selected_attribute(df)) #age/act
     print()
 
     print('Testcase 7 : ')
