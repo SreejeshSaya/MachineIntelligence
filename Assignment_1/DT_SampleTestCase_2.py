@@ -1,8 +1,8 @@
 from Assignment1 import *   
 
 def test_case():
+    print("Testcase 1 :")
     df = pd.read_csv('Test.csv')
-    #print(df)
     print('Dataset entropy : ',get_entropy_of_dataset(df)==0.9709505944546686)  #0.9709505944546686
     print('Sky entropy : ',get_entropy_of_attribute(df, 'Sky')==0.9509775004326937) #0.9509775004326937
     print('Sky IG : ', get_information_gain(df, 'Sky')==0.01997309402197489) #0.01997309402197489
@@ -15,8 +15,9 @@ def test_case():
     print('Forecast entropy : ',get_entropy_of_attribute(df, 'Forecast')==0.9509775004326937) #0.9509775004326937
     print('Forecast IG : ', get_information_gain(df, 'Forecast')==0.01997309402197489) #0.01997309402197489
     print(get_selected_attribute(df)) #Airtemp
+    print()
     
-    
+    print("Testcase 2 :")
     df = pd.read_csv('Test1.csv')
     print('Dataset entropy : ', get_entropy_of_dataset(df)==0.9402859586706311)  #0.9402859586706311
     print('Age entropy : ', get_entropy_of_attribute(df, 'Age')==0.6324823551623816) #0.6324823551623816
@@ -28,9 +29,10 @@ def test_case():
     print('Credit_rating entropy : ', get_entropy_of_attribute(df, 'Credit_rating')==0.8921589282623617) #0.8921589282623617
     print('Credit_rating IG : ', get_information_gain(df, 'Credit_rating')==0.04812703040826949) #0.04812703040826949
     print(get_selected_attribute(df)) #Age
+    print()
     
     
-    
+    print("Testcase 3 :")
     df = pd.read_csv('Test2.csv')
     print('Dataset entropy : ', get_entropy_of_dataset(df)==0.9852281360342515) #0.9852281360342515
     print('Salary entropy : ', get_entropy_of_attribute(df,'salary')==0.5156629249195446) #0.5156629249195446
@@ -38,9 +40,10 @@ def test_case():
     print('Location entropy : ', get_entropy_of_attribute(df,'location')==0.2857142857142857) #0.2857142857142857
     print('Location IG : ', get_information_gain(df,'location')==0.6995138503199658) #0.6995138503199658
     print(get_selected_attribute(df)) #location
+    print()
     
 
-
+    print("Testcase 4 :")
     df = pd.read_csv('Test3.csv')
     print('Dataset entropy : ', get_entropy_of_dataset(df)==0.9709505944546686) #0.9709505944546686
     print('Toothed entropy : ', get_entropy_of_attribute(df,'toothed')==0.963547202339972) #0.963547202339972
