@@ -2,7 +2,7 @@ from Assignment1 import *
 
 def test_case():
     print("Testcase 1 :")
-    df = pd.read_csv('Test.csv')
+    df = pd.read_csv('tests/Test1.csv')
     print('Dataset entropy : ',get_entropy_of_dataset(df)==0.9709505944546686)  #0.9709505944546686
     print('Sky avg info : ',get_entropy_of_attribute(df, 'Sky')==0.9509775004326937) #0.9509775004326937
     print('Sky IG : ', get_information_gain(df, 'Sky')==0.01997309402197489) #0.01997309402197489
@@ -18,7 +18,7 @@ def test_case():
     print()
     
     print("Testcase 2 :")
-    df = pd.read_csv('Test1.csv')
+    df = pd.read_csv('tests/Test2.csv')
     print('Dataset entropy : ', get_entropy_of_dataset(df)==0.9402859586706311)  #0.9402859586706311
     print('Age avg info : ', get_entropy_of_attribute(df, 'Age')==0.6324823551623816) #0.6324823551623816
     print('Age IG : ', get_information_gain(df, 'Age')==0.30780360350824953) #0.30780360350824953
@@ -33,7 +33,7 @@ def test_case():
     
     
     print("Testcase 3 :")
-    df = pd.read_csv('Test2.csv')
+    df = pd.read_csv('tests/Test3.csv')
     print('Dataset entropy : ', get_entropy_of_dataset(df)==0.9852281360342515) #0.9852281360342515
     print('Salary avg info : ', get_entropy_of_attribute(df,'salary')==0.5156629249195446) #0.5156629249195446
     print('Salary IG : ', get_information_gain(df,'salary')==0.46956521111470695) #0.46956521111470695
@@ -44,7 +44,7 @@ def test_case():
     
 
     print("Testcase 4 :")
-    df = pd.read_csv('Test3.csv')
+    df = pd.read_csv('tests/Test4.csv')
     print('Dataset entropy : ', get_entropy_of_dataset(df)==0.9709505944546686) #0.9709505944546686
     print('Toothed avg info : ', get_entropy_of_attribute(df,'toothed')==0.963547202339972) #0.963547202339972
     print('Toothed IG : ', get_information_gain(df,'toothed')==0.007403392114696539) #0.007403392114696539
@@ -56,10 +56,40 @@ def test_case():
     print()
 
     print('Testcase 5 : ')
-    df = pd.read_csv('Test4.csv')
+    df = pd.read_csv('tests/Test5.csv')
     print('Dataset entropy : ', get_entropy_of_dataset(df)==1.7295739585136223) #1.7295739585136223
     print('Category avg info : ', get_entropy_of_attribute(df,'category')==0.9182958340544896) #0.9182958340544896
     print('Category IG : ', get_information_gain(df, 'category')==0.8112781244591327) #0.8112781244591327
+    print()
+    
+    print('Testcase 6 : ')
+    df = pd.read_csv('tests/Test6.csv')
+    print('Dataset entropy : ', get_entropy_of_dataset(df)) #0.9709505944546686
+    print('color entropy : ', get_entropy_of_attribute(df,'color')) #0.9709505944546686
+    print('color IG : ', get_information_gain(df,'color')) #0.0
+    print('size entropy : ', get_entropy_of_attribute(df,'size'))#0.9709505944546686
+    print('size IG : ', get_information_gain(df,'size'))#0.0
+    print('act entropy : ', get_entropy_of_attribute(df,'act'))#0.5509775004326937
+    print('act IG : ', get_information_gain(df,'act'))#0.4199730940219749
+    print('age entropy : ', get_entropy_of_attribute(df,'age')) #0.5509775004326937
+    print('age IG : ', get_information_gain(df,'age'))#0.4199730940219749
+    print(get_selected_attribute(df))
+    print()
+
+    print('Testcase 7 : ')
+    df = pd.read_csv('tests/Test7.csv')
+    print('Dataset entropy : ', get_entropy_of_dataset(df)) #1.438862875041894
+    print('caprice entropy : ', get_entropy_of_attribute(df,'caprice')) #1.2921917219486116
+    print('caprice IG : ', get_information_gain(df,'caprice')) #0.14667115309328227
+    print('topic entropy : ', get_entropy_of_attribute(df,'topic'))#1.0883213898497568
+    print('topic IG : ', get_information_gain(df,'topic'))#0.3505414851921371
+    print('lmt entropy : ', get_entropy_of_attribute(df,'lmt'))#1.4134166106032882
+    print('lmt IG : ', get_information_gain(df,'lmt'))#0.02544626443860576
+    print('lpss entropy : ', get_entropy_of_attribute(df,'lpss')) #1.3920622169341164
+    print('lpss IG : ', get_information_gain(df,'lpss'))#0.04680065810777756
+    print('pb entropy : ', get_entropy_of_attribute(df,'pb')) #1.3591269643656734
+    print('pb IG : ', get_information_gain(df,'pb'))#0.07973591067622054
+    print(get_selected_attribute(df))
 
     
 
