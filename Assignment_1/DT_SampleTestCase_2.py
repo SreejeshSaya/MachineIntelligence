@@ -64,32 +64,32 @@ def test_case():
     
     print('Testcase 6 : ')
     df = pd.read_csv('tests/Test6.csv')
-    print('Dataset entropy : ', get_entropy_of_dataset(df)) #0.9709505944546686
-    print('color entropy : ', get_entropy_of_attribute(df,'color')) #0.9709505944546686
-    print('color IG : ', get_information_gain(df,'color')) #0.0
-    print('size entropy : ', get_entropy_of_attribute(df,'size'))#0.9709505944546686
-    print('size IG : ', get_information_gain(df,'size'))#0.0
-    print('act entropy : ', get_entropy_of_attribute(df,'act'))#0.5509775004326937
-    print('act IG : ', get_information_gain(df,'act'))#0.4199730940219749
-    print('age entropy : ', get_entropy_of_attribute(df,'age')) #0.5509775004326937
-    print('age IG : ', get_information_gain(df,'age'))#0.4199730940219749
-    print(get_selected_attribute(df))
+    print('Dataset entropy : ', get_entropy_of_dataset(df)==0.9709505944546686) #0.9709505944546686
+    print('color avg info : ', get_entropy_of_attribute(df,'color')==0.9709505944546686) #0.9709505944546686
+    print('color IG : ', get_information_gain(df,'color')==0.0) #0.0
+    print('size avg info : ', get_entropy_of_attribute(df,'size')==0.9709505944546686)#0.9709505944546686
+    print('size IG : ', get_information_gain(df,'size')==0.0)#0.0
+    print('act avg info : ', get_entropy_of_attribute(df,'act')==0.5509775004326937)#0.5509775004326937
+    print('act IG : ', get_information_gain(df,'act')==0.4199730940219749)#0.4199730940219749
+    print('age avg info : ', get_entropy_of_attribute(df,'age')==0.5509775004326937) #0.5509775004326937
+    print('age IG : ', get_information_gain(df,'age')==0.4199730940219749)#0.4199730940219749
+    print(get_selected_attribute(df)) #act/age
     print()
 
     print('Testcase 7 : ')
     df = pd.read_csv('tests/Test7.csv')
-    print('Dataset entropy : ', get_entropy_of_dataset(df)) #1.438862875041894
-    print('caprice entropy : ', get_entropy_of_attribute(df,'caprice')) #1.2921917219486116
-    print('caprice IG : ', get_information_gain(df,'caprice')) #0.14667115309328227
-    print('topic entropy : ', get_entropy_of_attribute(df,'topic'))#1.0883213898497568
-    print('topic IG : ', get_information_gain(df,'topic'))#0.3505414851921371
-    print('lmt entropy : ', get_entropy_of_attribute(df,'lmt'))#1.4134166106032882
-    print('lmt IG : ', get_information_gain(df,'lmt'))#0.02544626443860576
-    print('lpss entropy : ', get_entropy_of_attribute(df,'lpss')) #1.3920622169341164
-    print('lpss IG : ', get_information_gain(df,'lpss'))#0.04680065810777756
-    print('pb entropy : ', get_entropy_of_attribute(df,'pb')) #1.3591269643656734
-    print('pb IG : ', get_information_gain(df,'pb'))#0.07973591067622054
-    print(get_selected_attribute(df))
+    print('Dataset entropy : ', get_entropy_of_dataset(df)==1.438862875041894) #1.438862875041894
+    print('caprice avg info : ', get_entropy_of_attribute(df,'caprice')==1.2921917219486116) #1.2921917219486116
+    print('caprice IG : ', get_information_gain(df,'caprice')==0.14667115309328227) #0.14667115309328227
+    print('topic avg info : ', get_entropy_of_attribute(df,'topic')==1.0883213898497568)#1.0883213898497568
+    print('topic IG : ', get_information_gain(df,'topic')==0.3505414851921371)#0.3505414851921371
+    print('lmt avg info : ', get_entropy_of_attribute(df,'lmt')==1.4134166106032882)#1.4134166106032882
+    print('lmt IG : ', get_information_gain(df,'lmt')==0.02544626443860576)#0.02544626443860576
+    print('lpss avg info : ', get_entropy_of_attribute(df,'lpss')==1.3920622169341164) #1.3920622169341164
+    print('lpss IG : ', get_information_gain(df,'lpss')==0.04680065810777756)#0.04680065810777756
+    print('pb avg info : ', get_entropy_of_attribute(df,'pb')==1.3591269643656734) #1.3591269643656734
+    print('pb IG : ', get_information_gain(df,'pb')==0.07973591067622054)#0.07973591067622054
+    print(get_selected_attribute(df)) #topic
 
     
 
