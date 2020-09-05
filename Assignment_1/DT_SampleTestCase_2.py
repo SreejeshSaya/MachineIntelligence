@@ -91,6 +91,13 @@ def test_case():
     print('pb IG : ', get_information_gain(df,'pb')==0.07973591067622054)#0.07973591067622054
     print(get_selected_attribute(df)) #topic
 
+    print('Testcase 9 : ')
+    df = pd.read_csv('tests/Test9.csv')
+    print('Dataset entropy : ',get_entropy_of_dataset(df)==0.9182958340544896) #0.9182958340544896
+    print('Category avg info : ', get_entropy_of_attribute(df,'category')==0.9182958340544896) #0.9182958340544896
+    print('Category IG : ', get_information_gain(df, 'category')==0.0)
+    print(get_selected_attribute(df)) #({'category': 0.0}, 'category')
+
     
 
 if __name__=="__main__":

@@ -14,7 +14,7 @@ def get_entropy_of_dataset(df):
 	eps = np.finfo(float).eps
 	target =  list(df.iloc[:, -1])
 	size = len(target)
-	categ = set(target)
+	categ = list(set(target))
 	for i in categ:
 		p = target.count(i)/size
 		if p!=0:
