@@ -1,3 +1,26 @@
+
+def A_star_Traversal(
+    #add your parameters 
+):
+    l = []
+
+    return l
+
+def UCS_Traversal(
+    #add your parameters 
+):
+    l = []
+
+    return l
+
+def DFS_Traversal(
+    #add your parameters 
+):
+    l = []
+
+    return l
+
+
 '''
 Function tri_traversal - performs DFS, UCS and A* traversals and returns the path for each of these traversals 
 
@@ -16,6 +39,8 @@ start_point - single start node
 goals - list of size 'm' containing 'm' goals to reach from start_point
 
 Return : A list containing a list of all traversals [[],[],[]]
+1<=m<=n
+cost[n][n] , heuristic[n][n], start_point, goals[m]
 
 NOTE : you are allowed to write other helper functions that you can call in the given fucntion
 '''
@@ -23,12 +48,19 @@ NOTE : you are allowed to write other helper functions that you can call in the 
 def tri_traversal(cost, heuristic, start_point, goals):
     l = []
 
-
-    # t1 <= DFS_Traversal
-    # t2 <= UCS_Traversal
-    # t3 <= A_star_Traversal
+    t1 = DFS_Traversal(
+    #send whatever parameters you require 
+)
+    t2 = UCS_Traversal(
+    #send whatever parameters you require 
+)
+    t3 = A_star_Traversal(
+    #send whatever parameters you require 
+)
 
     l.append(t1)
     l.append(t2)
     l.append(t3)
     return l
+
+
