@@ -1,10 +1,74 @@
+def get_neighbours(cost, v, n):
+	neigh = []
+	for i in range(1, n+1):
+		if( cost[v][i] != -1 and i != v ):
+			neigh.append([i,cost[v][i]])
+	return neigh
 
-def A_star_Traversal(
-    #add your parameters 
-):
-    l = []
+def A_star_Traversal(cost, heuristic, start_point, goals):
+	num = len(cost) - 1 #in this case since cost is (n+1) n is the actual size
+	frontier = set([start_point]) # nodes visited but neighbours not explored, initially =to start_point
+	explored = set([]) # nodes visited and neighbours explored
+	
+	g = {} # g(n) -> current distance from start_node to n
+	g[start_point] = 0
+	parents = {}
+	parents[start_point] = start_point
 
-    return l
+	l = []
+	mincost = -1 #required to compare prev goal state's f(n) with new f(n')
+	while(len(frontier) > 0): # A* and GBFS always do exhaustive search
+		n = None
+		# find a node with the lowest value of f()
+		for v in frontier:
+			if(n == None or g[v] + heuristic[v] < g[n] + heuristic[n]):
+				n = v
+
+		if (n == None):
+			#print("No path")
+			return None
+		'''
+		if the current node is the goal
+        then trace back from child to parent and so on until start_point
+        thus this will be in reverse order. 
+		'''
+		if(n in goals):
+			orig = n
+			if(mincost==-1 or mincost > g[n]+heuristic[n]):
+				#print(g[n])
+				mincost = g[n] + heuristic[n]
+				l = []
+				while parents[n] != n:
+					l.append(n)
+					n = parents[n]
+				l.append(start_point)
+				l.reverse()
+
+			n = orig
+			#print('Path found: {}'.format(l))
+			#return l
+
+		# n->parent m->child
+		for (m, weight) in get_neighbours(cost, n, num ):
+			#print(m,weight)
+			if ( (m not in frontier) and (m not in explored)):
+				frontier.add(m)
+				parents[m] = n
+				g[m] = g[n] + weight
+			else:
+				if( g[m] > g[n] + weight):
+					g[m] = g[n] + weight
+					parents[m] = n
+
+					if(m in explored):
+						explored.remove(m)
+						frontier.add(m)
+		#print(parents)
+		#now n has been explored, including its neighbours
+		frontier.remove(n)
+		explored.add(n)
+
+	return l
 
 def UCS_Traversal(
     #add your parameters 
@@ -48,19 +112,14 @@ NOTE : you are allowed to write other helper functions that you can call in the 
 def tri_traversal(cost, heuristic, start_point, goals):
     l = []
 
-    t1 = DFS_Traversal(
-    #send whatever parameters you require 
-)
-    t2 = UCS_Traversal(
-    #send whatever parameters you require 
-)
-    t3 = A_star_Traversal(
-    #send whatever parameters you require 
-)
+    t1 = DFS_Traversal()
+    t2 = UCS_Traversal()
+    t3 = A_star_Traversal(cost, heuristic, start_point, goals)
 
     l.append(t1)
     l.append(t2)
     l.append(t3)
+    print(l)
     return l
 
 
