@@ -92,7 +92,43 @@ def astar(cost, heuristic, start_point, goals):
 	return temp_soln
 	return None
 
-cost = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+
+
+def astartest():
+	print("Test 1: ", astar(cost1, heuristic1, 1, [1]) == [1])
+	print("Test 2: ", astar(cost1, heuristic1, 1, [2]) == [1, 2])
+	print("Test 3: ", astar(cost1, heuristic1, 1, [3]) == [1, 2, 3])
+	print("Test 4: ", astar(cost1, heuristic1, 1, [4]) == [1,5,4])
+	print("Test 5: ", astar(cost1, heuristic1, 1, [5]) == [1,5])
+	print("Test 6: ", astar(cost1, heuristic1, 1, [6]) == [1,2,6])
+	print("Test 7: ", astar(cost1, heuristic1, 1, [7]) == [1,5,4,7])
+	print("Test 8: ", astar(cost1, heuristic1, 1, [8]) == [1,5,4,8])
+	print("Test 9: ", astar(cost1, heuristic1, 1, [9]) == [1,5,9])
+	print("Test 10: ", astar(cost1, heuristic1, 1, [10]) == [1,5,9,10])
+	print("Test 11: ", astar(cost1, heuristic1, 1, [6,7,10]) == [1,5,4,7])
+	print("Test 12: ", astar(cost1, heuristic1, 1, [3,4,7,10]) == [1,2,3])
+	print("Test 13: ", astar(cost1, heuristic1, 1, [5,9,4]) == [1,5])
+	print("Test 14: ", astar(cost1, heuristic1, 1, [4,8,10]) == [1,5,4])
+	print("Test 15: ", astar(cost1, heuristic1, 1, [2,8,5]) == [1,2])
+	print("Test 16: ", astar(cost1, heuristic1, 1, [7,9,10]) == [1,5,4,7])
+	print("Test 17: ", astar(cost1, heuristic1, 1, [10,6,8,4]) == [1,5,4])
+	print("Test 18: ", astar(cost1, heuristic1, 1, [9,7,5,10]) == [1,5])
+
+	print("Test 19: ", astar(cost2, heuristic2, 1, [1]) == [1])
+	print("Test 20: ", astar(cost2, heuristic2, 1, [2]) == [1,2])
+	print("Test 21: ", astar(cost2, heuristic2, 1, [3]) == [1,7,3])
+	print("Test 22: ", astar(cost2, heuristic2, 1, [4]) == [1,7,3,4])
+	print("Test 23: ", astar(cost2, heuristic2, 1, [5]) == [1,7,3,6,5])
+	print("Test 24: ", astar(cost2, heuristic2, 1, [6]) == [1,7,3,6])
+	print("Test 25: ", astar(cost2, heuristic2, 1, [7]) == [1,7])
+	print("Test 26: ", astar(cost2, heuristic2, 1, [4,5,6]) == [1,7,3,4])
+	print("Test 27: ", astar(cost2, heuristic2, 1, [3,6,7]) == [1,7])
+	print("Test 28: ", astar(cost2, heuristic2, 1, [4,6]) == [1,7,3,4])
+	print("Test 29: ", astar(cost2, heuristic2, 1, [2,3,7]) == [1,7])
+
+	print("Test 30: ", astar(cost2, heuristic2, 4, [3]) == [])
+
+cost1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
             [0, 0, 5, 9, -1, 6, -1, -1, -1, -1, -1],
             [0, -1, 0, 3, -1, -1, 9, -1, -1, -1, -1], 
             [0, -1, 2, 0, 1, -1, -1, -1, -1, -1, -1],
@@ -103,22 +139,26 @@ cost = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, -1, -1, -1, -1, 2, -1, -1, 0, -1, 8],
             [0, -1, -1, -1, -1, -1, -1, -1, -1, 0, 7],
             [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0]]
-cost1 = [[0,0,0,0,0,0,0,0],
+cost2 = [[0,0,0,0,0,0,0,0],
 	[0,0,3,-1,-1,-1,-1,2],
 	[0,-1,0,5,10,-1,-1,-1],
 	[0,-1,-1,0,2,-1,1,-1],
 	[0,-1,-1,-1,0,4,-1,-1],
 	[0,-1,-1,-1,-1,0,-1,-1],
 	[0,-1,-1,-1,-1,3,0,-1],
-	[0,-1,-1,1,-1,-1,4,0]]
+	[0,-1,-1,1,-1,-1,4,0]]  #https://www.geeksforgeeks.org/search-algorithms-in-ai/
+	#S-1; A-2; B-3; C-4; G-5; E-6; D-7
+
 heuristic1 = [0, 5, 7, 3, 4, 6, 0, 0, 6, 5, 0]
-heuristic2 = [0,7,9,4,2,0,3,5]
+heuristic2 = [0,7,9,4,2,0,3,5] #https://www.geeksforgeeks.org/search-algorithms-in-ai/
 #check = get_neighbours(cost, 1, 10)
 #for (m,weight)  in check:
 #	print(m,weight)
 
-print(astar(cost, heuristic1, 1, [8]))
-print(astar(cost1, heuristic2, 1, [2]))
+#print(astar(cost, heuristic1, 1, [3,4,7,10]))
+#print(astar(cost1, heuristic2, 1, [2]))
+
+astartest()
 '''
 verifies with unit 1 (video on PESU) : Problem solving by Searching- Informed Search , time - 19:37
 for goal state 	6 - [1,2,6] g(n) = 14
