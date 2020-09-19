@@ -69,75 +69,23 @@ def UCS_Traversal(cost, start_point, goals):
             frontier.sort()
     return []
 
-# Helper Function for A_star_Traversal
-def get_neighbours(cost, v, n):
-	neigh = []
-	for i in range(1, n+1):
-		if( cost[v][i] != -1 and i != v ):
-			neigh.append([i,cost[v][i]])
-	return neigh
-
 def A_star_Traversal(cost, heuristic, start_point, goals):
-	num = len(cost) - 1 #in this case since cost is (n+1) n is the actual size
-	frontier = set([start_point]) # nodes visited but neighbours not explored, initially =to start_point
-	explored = set([]) # nodes visited and neighbours explored
-	
-	g = {} # g(n) -> current distance from start_node to n
-	g[start_point] = 0
-	parents = {}
-	parents[start_point] = start_point
-
-	l = []
-	mincost = -1 #required to compare prev goal state's f(n) with new f(n')
-	while(len(frontier) > 0): # A* and GBFS always do exhaustive search
-		n = None
-		# find a node with the lowest value of f()
-		for v in frontier:
-			if(n == None or g[v] + heuristic[v] < g[n] + heuristic[n]):
-				n = v
-
-		if (n == None):
-			#print("No path")
-			return None
-		'''
-		if the current node is the goal
-        then trace back from child to parent and so on until start_point
-        thus this will be in reverse order. 
-		'''
-		if(n in goals):
-			orig = n
-			if(mincost==-1 or mincost > g[n]+heuristic[n]):
-				#print(g[n])
-				mincost = g[n] + heuristic[n]
-				l = []
-				while parents[n] != n:
-					l.append(n)
-					n = parents[n]
-				l.append(start_point)
-				l.reverse()
-
-			n = orig
-			#print('Path found: {}'.format(l))
-			#return l
-
-		# n->parent m->child
-		for (m, weight) in get_neighbours(cost, n, num ):
-			#print(m,weight)
-			if ((m not in frontier) and (m not in explored)):
-				frontier.add(m)
-				parents[m] = n
-				g[m] = g[n] + weight
-			else:
-				if( g[m] > g[n] + weight):
-					g[m] = g[n] + weight
-					parents[m] = n
-
-					if(m in explored):
-						explored.remove(m)
-						frontier.add(m)
-		#print(parents)
-		#now n has been explored, including its neighbours
-		frontier.remove(n)
-		explored.add(n)
-
-	return l
+    n = len(cost)
+    explored = set()
+    frontier = []
+    frontier.append((0, heuristic[start_point], start_point, [start_point]))
+    while frontier:
+        (pathCost, pathHeur, node, path) = frontier.pop(0)
+        if node in goals:
+            return path
+        # if(node not in explored):
+        explored.add(node)
+        for i in range(1, n):
+            if(cost[node][i]!=-1 and i not in explored):
+                nodePath = path[:]
+                nodePath.append(i)
+                nodePathCost = pathCost+cost[node][i]
+                frontier.append((nodePathCost, nodePathCost+heuristic[i], i, nodePath))
+        frontier.sort(key=lambda x: (x[1], x[2], x[3]))
+        # print(frontier)
+    return []
