@@ -82,8 +82,8 @@ def DFS_Traversal(cost, start_point, goals):
                 path2Node = l.copy()
                 path2Node.append(i)
                 nodeStack.append((i, path2Node))
-    # print("No Path found")
-    return None
+    # print("No Path found") #return [] and not 'None'
+    return []
 
 def UCS_Traversal():
     l = []
