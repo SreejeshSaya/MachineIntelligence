@@ -22,72 +22,86 @@ cost[n][n] , heuristic[n][n], start_point, goals[m]
 NOTE : you are allowed to write other helper functions that you can call in the given function
 '''
 
+import queue
+
 def tri_traversal(cost, heuristic, start_point, goals):
     l = []
-
     t1 = DFS_Traversal(cost, start_point, goals)
-    t2 = UCS_Traversal()
+    t2 = UCS_Traversal(cost, start_point, goals)
     t3 = A_star_Traversal(cost, heuristic, start_point, goals)
 
     l.append(t1)
     l.append(t2)
     l.append(t3)
-    # print(l)
     return l
-
-#Helper Function for DFS_Traversal
-# def dfsHelper(node, cost, n, goals, path, visited):
-#     if node not in visited:
-#         visited.add(node)
-#         path.append(node)
-#         if node in goals:
-#             return path
-#         for i in range(1, n):
-#             if (cost[node][i] != -1) and (i not in visited) :
-#                 path = dfsHelper(i, cost, n, goals, path, visited)
-#     return path
-
-# def DFS_Traversal(cost, start_point, goals):
-#     l = []
-#     l.append(start_point)
-#     if(start_point in goals): # If start_point is a goal state
-#         return l
-
-#     visited = set()
-#     visited.add(start_point)
-#     n = len(cost)
-#     for node in range(1, n):
-#         if (cost[start_point][node] != -1) and (node not in visited):
-#             l = dfsHelper(node, cost, n, goals, l, visited)
-#     print(l)
-#     return l
 
 def DFS_Traversal(cost, start_point, goals):
     l = []
-
     visited = set()
-    path2Node = [start_point]
     nodeStack = []
-    nodeStack.append((start_point, path2Node))
-    # print("in dfs", nodeStack)
+    nodeStack.append((start_point, start_point))
+    parentNode = {}
     n = len(cost)
     while(len(nodeStack) != 0):
-        # print("stack Ele", nodeStack[-1])
-        (node, l) = nodeStack.pop()
+        (node, parent) = nodeStack.pop()
         visited.add(node)
+        parentNode[node] = parent
         if(node in goals):
+            while(parentNode[node] != node):
+                l.insert(0, node)
+                node = parentNode[node]
+            l.insert(0, start_point)
             return l
         for i in range(n-1, 0, -1):
             if (cost[node][i] != -1) and (i not in visited):
-                path2Node = l.copy()
-                path2Node.append(i)
-                nodeStack.append((i, path2Node))
-    # print("No Path found") #return [] and not 'None'
+                nodeStack.append((i, node))
     return []
 
-def UCS_Traversal():
+# def DFS_Traversal(cost, start_point, goals):
+    # l = []
+    # visited = set()
+    # path2Node = [start_point]
+    # nodeStack = []
+    # nodeStack.append((start_point, path2Node))
+    # # print("in dfs", nodeStack)
+    # n = len(cost)
+    # while(len(nodeStack) != 0):
+    #     # print("stack Ele", nodeStack[-1])
+    #     (node, l) = nodeStack.pop()
+    #     visited.add(node)
+    #     if(node in goals):
+    #         return l
+    #     for i in range(n-1, 0, -1):
+    #         if (cost[node][i] != -1) and (i not in visited):
+    #             path2Node = l.copy()
+    #             path2Node.append(i)
+    #             nodeStack.append((i, path2Node))
+    # # print("No Path found")
+    # return None
+
+def UCS_Traversal(cost, start_point, goals):
     l = []
-    return l
+    n = len(cost)
+    explored = set()
+    frontier = queue.PriorityQueue()
+    frontier.put((0, start_point, start_point))
+    parentNode = {}
+    while(not frontier.empty()):
+        (pathCost, node, parent) = frontier.get()
+        if node in goals:
+            parentNode[node] = parent
+            while(parentNode[node] != node):
+                l.insert(0, node)
+                node = parentNode[node]        
+            l.insert(0, start_point)
+            return l 
+        if(node not in explored):
+            parentNode[node] = parent
+            explored.add(node)
+            for i in range(1, n):
+                if(cost[node][i]!=-1 and i not in explored):
+                    frontier.put((pathCost+cost[node][i], i, node))
+    return None
 
 # Helper Function for A_star_Traversal
 def get_neighbours(cost, v, n):
