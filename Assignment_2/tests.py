@@ -1,5 +1,16 @@
 from Assignment2 import *
 
+
+def test(cal, exp, case ):
+	print("\n")
+	ok = {0: "DFS", 1: "UCS", 2: "A*S"}
+	print("+++++++++++++++Test Case : ",case)
+	for i in range(3):
+		if(exp[i] == cal[i]):
+			print("{0} : PASS".format(ok[i]))
+		else:
+			print("{0} : FAIL ---- Expected: {1}  Got: {2}".format(ok[i],exp[i],cal[i]))
+			
 cost1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
             [0, 0, 5, 9, -1, 6, -1, -1, -1, -1, -1],
             [0, -1, 0, 3, -1, -1, 9, -1, -1, -1, -1], 
@@ -34,117 +45,127 @@ heuristic1 = [0, 5, 7, 3, 4, 6, 0, 0, 6, 5, 0]
 heuristic2 = [0,7,9,4,2,0,3,5]
 heuristic3 = [0, 10, 8, 7, 7, 3]
 
-astar =  A_star_Traversal
-dfs = DFS_Traversal
 
-def dfstestcheck():
-	print("----------------------------------OUTPUT CHECK TESTS FOR DFS SEARCH----------------------------------------")
-	print("Test 1: ", dfs(cost1, 1, [1]) )
-	print("Test 2: ", dfs(cost1, 1, [2]) )
-	print("Test 3: ", dfs(cost1, 1, [3]) )
-	print("Test 4: ", dfs(cost1, 1, [4]) )
-	print("Test 5: ", dfs(cost1, 1, [5]) )
-	print("Test 6: ", dfs(cost1, 1, [6]) )
-	print("Test 7: ", dfs(cost1, 1, [7]) )
-	print("Test 8: ", dfs(cost1, 1, [8]) )
-	print("Test 9: ", dfs(cost1, 1, [9]) )
-	print("Test 10: ", dfs(cost1, 1, [10]) )
-	print("Test 11: ", dfs(cost1, 1, [6,7,10]) )
-	print("Test 12: ", dfs(cost1, 1, [3,4,7,10]) )
-	print("Test 13: ", dfs(cost1, 1, [5,9,4]) )
-	print("Test 14: ", dfs(cost1, 1, [4,8,10]) )
-	print("Test 15: ", dfs(cost1, 1, [2,8,5]) )
-	print("Test 16: ", dfs(cost1, 1, [7,9,10]) )
-	print("Test 17: ", dfs(cost1, 1, [10,6,8,4]) )
-	print("Test 18: ", dfs(cost1, 1, [9,7,5,10]) )
+x = tri_traversal(cost1, heuristic1, 1, [1])
+test(x,[[1],[1],[1]], 1)
 
-	print("Test 19: ", dfs(cost2, 1, [1]) )
-	print("Test 20: ", dfs(cost2, 1, [2]) )
-	print("Test 21: ", dfs(cost2, 1, [3]) )
-	print("Test 22: ", dfs(cost2, 1, [4]) )
-	print("Test 23: ", dfs(cost2, 1, [5]) )
-	print("Test 24: ", dfs(cost2, 1, [6]) )
-	print("Test 25: ", dfs(cost2, 1, [7]) )
-	print("Test 26: ", dfs(cost2, 1, [4,5,6]) )
-	print("Test 27: ", dfs(cost2, 1, [3,6,7]) )
-	print("Test 28: ", dfs(cost2, 1, [4,6]) )
-	print("Test 29: ", dfs(cost2, 1, [2,3,7]))
 
-	print("Test 30: ", dfs(cost2, 4, [3]) )
-	print("Test 31: ", dfs(cost3, 1, [5]) )
+x = tri_traversal(cost1, heuristic1, 1, [2])
+test(x,[[1,2],[1,2],[1,2]], 2)
 
-def dfstest():
-	print("---------------------------------- TESTS FOR DFS SEARCH----------------------------------------")
-	print("Test 1: ", dfs(cost1, 1, [1]) == [1])
-	print("Test 2: ", dfs(cost1, 1, [2]) == [1,2])
-	print("Test 3: ", dfs(cost1, 1, [3]) == [1,2,3])
-	print("Test 4: ", dfs(cost1, 1, [4]) == [1,2,3,4])
-	print("Test 5: ", dfs(cost1, 1, [5]) == [1,2,3,4,8,5])
-	print("Test 6: ", dfs(cost1, 1, [6]) == [1,2,6])
-	print("Test 7: ", dfs(cost1, 1, [7]) == [1,2,3,4,7])
-	print("Test 8: ", dfs(cost1, 1, [8]) == [1,2,3,4,8])
-	print("Test 9: ", dfs(cost1, 1, [9]) == [1,2,3,4,8,5,9])
-	print("Test 10: ", dfs(cost1, 1, [10]) == [1, 2, 3, 4, 8, 5, 9, 10])
-	print("Test 11: ", dfs(cost1, 1, [6,7,10]) == [1,2,3,4,7])
-	print("Test 12: ", dfs(cost1, 1, [3,4,7,10]) == [1,2,3])
-	print("Test 13: ", dfs(cost1, 1, [5,9,4]) == [1,2,3,4])
-	print("Test 14: ", dfs(cost1, 1, [4,8,10]) == [1,2,3,4])
-	print("Test 15: ", dfs(cost1, 1, [2,8,5]) == [1,2])
-	print("Test 16: ", dfs(cost1, 1, [7,9,10]) == [1,2,3,4,7])
-	print("Test 17: ", dfs(cost1, 1, [10,6,8,4]) == [1,2,3,4])
-	print("Test 18: ", dfs(cost1, 1, [9,7,5,10]) == [1,2,3,4,7])
 
-	print("Test 19: ", dfs(cost2, 1, [1]) == [1])
-	print("Test 20: ", dfs(cost2, 1, [2]) == [1,2])
-	print("Test 21: ", dfs(cost2, 1, [3]) == [1,2,3])
-	print("Test 22: ", dfs(cost2, 1, [4]) == [1,2,3,4])
-	print("Test 23: ", dfs(cost2, 1, [5]) == [1,2,3,4,5])
-	print("Test 24: ", dfs(cost2, 1, [6]) == [1,2,3,6])
-	print("Test 25: ", dfs(cost2, 1, [7]) == [1,7])
-	print("Test 26: ", dfs(cost2, 1, [4,5,6]) == [1,2,3,4])
-	print("Test 27: ", dfs(cost2, 1, [3,6,7]) == [1,2,3])
-	print("Test 28: ", dfs(cost2, 1, [4,6]) == [1,2,3,4])
-	print("Test 29: ", dfs(cost2, 1, [2,3,7]) == [1,2])
+x = tri_traversal(cost1, heuristic1, 1, [3])
+test(x,[[1,2,3],[1,2,3],[1,2,3]], 3)
 
-	print("Test 30: ", dfs(cost2, 4, [3]) == [])
-	print("Test 31: ", dfs(cost3, 1, [5]) == [1,2,3,4,5])
-	
-def astartest():
-	print("----------------------------------TESTS FOR A* SEARCH----------------------------------------")
-	print("Test 1: ", astar(cost1, heuristic1, 1, [1]) == [1])
-	print("Test 2: ", astar(cost1, heuristic1, 1, [2]) == [1, 2])
-	print("Test 3: ", astar(cost1, heuristic1, 1, [3]) == [1, 2, 3])
-	print("Test 4: ", astar(cost1, heuristic1, 1, [4]) == [1,5,4])
-	print("Test 5: ", astar(cost1, heuristic1, 1, [5]) == [1,5])
-	print("Test 6: ", astar(cost1, heuristic1, 1, [6]) == [1,2,6])
-	print("Test 7: ", astar(cost1, heuristic1, 1, [7]) == [1,5,4,7])
-	print("Test 8: ", astar(cost1, heuristic1, 1, [8]) == [1,5,4,8])
-	print("Test 9: ", astar(cost1, heuristic1, 1, [9]) == [1,5,9])
-	print("Test 10: ", astar(cost1, heuristic1, 1, [10]) == [1,5,9,10])
-	print("Test 11: ", astar(cost1, heuristic1, 1, [6,7,10]) == [1,5,4,7])
-	print("Test 12: ", astar(cost1, heuristic1, 1, [3,4,7,10]) == [1,2,3])
-	print("Test 13: ", astar(cost1, heuristic1, 1, [5,9,4]) == [1,5])
-	print("Test 14: ", astar(cost1, heuristic1, 1, [4,8,10]) == [1,5,4])
-	print("Test 15: ", astar(cost1, heuristic1, 1, [2,8,5]) == [1,2])
-	print("Test 16: ", astar(cost1, heuristic1, 1, [7,9,10]) == [1,5,4,7])
-	print("Test 17: ", astar(cost1, heuristic1, 1, [10,6,8,4]) == [1,5,4])
-	print("Test 18: ", astar(cost1, heuristic1, 1, [9,7,5,10]) == [1,5])
 
-	print("Test 19: ", astar(cost2, heuristic2, 1, [1]) == [1])
-	print("Test 20: ", astar(cost2, heuristic2, 1, [2]) == [1,2])
-	print("Test 21: ", astar(cost2, heuristic2, 1, [3]) == [1,7,3])
-	print("Test 22: ", astar(cost2, heuristic2, 1, [4]) == [1,7,3,4])
-	print("Test 23: ", astar(cost2, heuristic2, 1, [5]) == [1,7,3,6,5])
-	print("Test 24: ", astar(cost2, heuristic2, 1, [6]) == [1,7,3,6])
-	print("Test 25: ", astar(cost2, heuristic2, 1, [7]) == [1,7])
-	print("Test 26: ", astar(cost2, heuristic2, 1, [4,5,6]) == [1,7,3,4])
-	print("Test 27: ", astar(cost2, heuristic2, 1, [3,6,7]) == [1,7])
-	print("Test 28: ", astar(cost2, heuristic2, 1, [4,6]) == [1,7,3,4])
-	print("Test 29: ", astar(cost2, heuristic2, 1, [2,3,7]) == [1,7])
+x = tri_traversal(cost1, heuristic1, 1, [4])
+test(x,[[1,2,3,4],[1,5,4],[1,5,4]], 4)
 
-	print("Test 30: ", astar(cost2, heuristic2, 4, [3]) == [])
-	print("Test 31: ", astar(cost3, heuristic3, 1, [5]) == [1, 2, 3, 5])
-	
-#dfstestcheck() #uncomment if you want to check what ur code prints
-dfstest()	
-astartest()	
+
+x = tri_traversal(cost1, heuristic1, 1, [5])
+test(x,[[1,2,3,4,8,5],[1,5],[1,5]], 5)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [6])
+test(x,[[1,2,6],[1,2,6],[1,2,6]], 6)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [7])
+test(x,[[1,2,3,4,7],[1,5,4,7],[1,5,4,7]], 7)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [8])
+test(x,[[1,2,3,4,8],[1,5,4,8],[1,5,4,8]], 8)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [9])
+test(x,[[1,2,3,4,8,5,9],[1,5,9],[1,5,9]], 9)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [10])
+test(x,[[1,2,3,4,8,5,9,10],[1,5,9,10],[1,5,9,10]], 10)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [6,7,10])
+test(x,[[1,2,3,4,7],[1,5,4,7],[1,5,4,7]], 11)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [3,4,7,10])
+test(x,[[1,2,3],[1,2,3],[1,2,3]], 12)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [5,9,4])
+test(x,[[1,2,3,4],[1,5],[1,5]], 13)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [4,8,10])
+test(x,[[1,2,3,4],[1,5,4],[1,5,4]], 14)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [2,8,5])
+test(x,[[1,2],[1,2],[1,2]], 15)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [7,9,10])
+test(x,[[1,2,3,4,7],[1,5,9],[1,5,4,7]], 16) # a* != dfs here
+
+
+x = tri_traversal(cost1, heuristic1, 1, [10,6,8,4])
+test(x,[[1,2,3,4],[1,5,4],[1,5,4]], 17)
+
+
+x = tri_traversal(cost1, heuristic1, 1, [9,7,5,10])
+test(x,[[1,2,3,4,7],[1,5],[1,5]], 18)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [1])
+test(x,[[1],[1],[1]], 19)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [2])
+test(x,[[1,2],[1,2],[1,2]], 20)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [3])
+test(x,[[1,2,3],[1,7,3],[1,7,3]], 21)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [4])
+test(x,[[1,2,3,4],[1,7,3,4],[1,7,3,4]], 22)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [5])
+test(x,[[1,2,3,4,5],[1,7,3,6,5],[1,7,3,6,5]], 23)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [6])
+test(x,[[1,2,3,6],[1,7,3,6],[1,7,3,6]], 24)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [7])
+test(x,[[1,7],[1,7],[1,7]], 25)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [4,5,6])
+test(x,[[1,2,3,4],[1,7,3,6],[1,7,3,4]], 26)# i donno a* can be = [1,7,3,6] cuz it costs the same f(n)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [3,6,7])
+test(x,[[1,2,3],[1,7],[1,7]], 27)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [4,6])
+test(x,[[1,2,3,4],[1,7,3,6],[1,7,3,4]], 28) # i donno a* can be = [1,7,3,6] cuz it costs the same f(n)
+
+
+x = tri_traversal(cost2, heuristic2, 1, [2,3,7])
+test(x,[[1,2],[1,7],[1,7]], 29)
+
+
+x = tri_traversal(cost2, heuristic2, 4, [3])
+test(x,[[],[],[]], 30)
+
+
+x = tri_traversal(cost3, heuristic3, 1, [5])
+test(x,[[1,2,3,4,5],[1,2,3,5],[1,2,3,5]], 31)
+
