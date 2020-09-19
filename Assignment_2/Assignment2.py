@@ -22,8 +22,6 @@ cost[n][n] , heuristic[n][n], start_point, goals[m]
 NOTE : you are allowed to write other helper functions that you can call in the given function
 '''
 
-import queue
-
 def tri_traversal(cost, heuristic, start_point, goals):
     l = []
     t1 = DFS_Traversal(cost, start_point, goals)
@@ -36,72 +34,40 @@ def tri_traversal(cost, heuristic, start_point, goals):
     return l
 
 def DFS_Traversal(cost, start_point, goals):
-    l = []
     visited = set()
     nodeStack = []
-    nodeStack.append((start_point, start_point))
-    parentNode = {}
+    nodeStack.append((start_point, [start_point]))
     n = len(cost)
     while(len(nodeStack) != 0):
-        (node, parent) = nodeStack.pop()
+        (node, path) = nodeStack.pop()
         visited.add(node)
-        parentNode[node] = parent
         if(node in goals):
-            while(parentNode[node] != node):
-                l.insert(0, node)
-                node = parentNode[node]
-            l.insert(0, start_point)
-            return l
+            return path
         for i in range(n-1, 0, -1):
             if (cost[node][i] != -1) and (i not in visited):
-                nodeStack.append((i, node))
+                nodePath = path[:]
+                nodePath.append(i)
+                nodeStack.append((i, nodePath))
     return []
 
-# def DFS_Traversal(cost, start_point, goals):
-    # l = []
-    # visited = set()
-    # path2Node = [start_point]
-    # nodeStack = []
-    # nodeStack.append((start_point, path2Node))
-    # # print("in dfs", nodeStack)
-    # n = len(cost)
-    # while(len(nodeStack) != 0):
-    #     # print("stack Ele", nodeStack[-1])
-    #     (node, l) = nodeStack.pop()
-    #     visited.add(node)
-    #     if(node in goals):
-    #         return l
-    #     for i in range(n-1, 0, -1):
-    #         if (cost[node][i] != -1) and (i not in visited):
-    #             path2Node = l.copy()
-    #             path2Node.append(i)
-    #             nodeStack.append((i, path2Node))
-    # # print("No Path found")
-    # return None
-
 def UCS_Traversal(cost, start_point, goals):
-    l = []
     n = len(cost)
     explored = set()
-    frontier = queue.PriorityQueue()
-    frontier.put((0, start_point, start_point))
-    parentNode = {}
-    while(not frontier.empty()):
-        (pathCost, node, parent) = frontier.get()
+    frontier = []
+    frontier.append((0, start_point, [start_point]))
+    while frontier:
+        (pathCost, node, path) = frontier.pop(0)
         if node in goals:
-            parentNode[node] = parent
-            while(parentNode[node] != node):
-                l.insert(0, node)
-                node = parentNode[node]        
-            l.insert(0, start_point)
-            return l 
+            return path
         if(node not in explored):
-            parentNode[node] = parent
             explored.add(node)
             for i in range(1, n):
                 if(cost[node][i]!=-1 and i not in explored):
-                    frontier.put((pathCost+cost[node][i], i, node))
-    return None
+                    nodePath = path[:]
+                    nodePath.append(i)
+                    frontier.append((pathCost+cost[node][i], i, nodePath))
+            frontier.sort()
+    return 
 
 # Helper Function for A_star_Traversal
 def get_neighbours(cost, v, n):
