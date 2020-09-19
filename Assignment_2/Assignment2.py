@@ -101,7 +101,7 @@ def UCS_Traversal(cost, start_point, goals):
             for i in range(1, n):
                 if(cost[node][i]!=-1 and i not in explored):
                     frontier.put((pathCost+cost[node][i], i, node))
-    return None
+    return []
 
 # Helper Function for A_star_Traversal
 def get_neighbours(cost, v, n):
