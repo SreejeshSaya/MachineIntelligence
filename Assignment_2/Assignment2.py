@@ -48,7 +48,6 @@ def DFS_Traversal(cost, start_point, goals):
                 if (cost[node][i] != -1) and (i not in explored):
                     nodePath = path + [i]
                     nodeStack.append((i, nodePath))
-        print(nodeStack)
     return []
 
 def UCS_Traversal(cost, start_point, goals):
