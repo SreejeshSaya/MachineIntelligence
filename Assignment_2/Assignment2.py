@@ -34,19 +34,19 @@ def tri_traversal(cost, heuristic, start_point, goals):
     return l
 
 def DFS_Traversal(cost, start_point, goals):
-    visited = set()
+    n = len(cost)
+    explored = set()
     nodeStack = []
     nodeStack.append((start_point, [start_point]))
-    n = len(cost)
     while(len(nodeStack) != 0):
         (node, path) = nodeStack.pop()
-        visited.add(node)
+        explored.add(node)
         if(node in goals):
             return path
+        # if(node not in explored):
         for i in range(n-1, 0, -1):
-            if (cost[node][i] != -1) and (i not in visited):
-                nodePath = path[:]
-                nodePath.append(i)
+            if (cost[node][i] != -1) and (i not in explored):
+                nodePath = path + [i]
                 nodeStack.append((i, nodePath))
     return []
 
@@ -56,17 +56,15 @@ def UCS_Traversal(cost, start_point, goals):
     frontier = []
     frontier.append((0, start_point, [start_point]))
     while frontier:
-        (pathCost, node, path) = frontier.pop(0)
+        (pathCost, node, path) = frontier.pop(frontier.index(min(frontier)))
         if node in goals:
             return path
         if(node not in explored):
             explored.add(node)
             for i in range(1, n):
                 if(cost[node][i]!=-1 and i not in explored):
-                    nodePath = path[:]
-                    nodePath.append(i)
+                    nodePath = path + [i]
                     frontier.append((pathCost+cost[node][i], i, nodePath))
-            frontier.sort()
     return []
 
 def A_star_Traversal(cost, heuristic, start_point, goals):
@@ -75,17 +73,14 @@ def A_star_Traversal(cost, heuristic, start_point, goals):
     frontier = []
     frontier.append((0, heuristic[start_point], start_point, [start_point]))
     while frontier:
-        (pathCost, pathHeur, node, path) = frontier.pop(0)
+        (pathCost, pathHeur, node, path) = frontier.pop(frontier.index(min(frontier, key=lambda x: (x[1], x[2], x[3]))))
         if node in goals:
             return path
-        # if(node not in explored):
-        explored.add(node)
-        for i in range(1, n):
-            if(cost[node][i]!=-1 and i not in explored):
-                nodePath = path[:]
-                nodePath.append(i)
-                nodePathCost = pathCost+cost[node][i]
-                frontier.append((nodePathCost, nodePathCost+heuristic[i], i, nodePath))
-        frontier.sort(key=lambda x: (x[1], x[2], x[3]))
-        # print(frontier)
+        if(node not in explored):
+            explored.add(node)
+            for i in range(1, n):
+                if(cost[node][i]!=-1 and i not in explored):
+                    nodePath = path + [i]
+                    nodePathCost = pathCost+cost[node][i]
+                    frontier.append((nodePathCost, nodePathCost+heuristic[i], i, nodePath))
     return []
