@@ -40,14 +40,15 @@ def DFS_Traversal(cost, start_point, goals):
     nodeStack.append((start_point, [start_point]))
     while(len(nodeStack) != 0):
         (node, path) = nodeStack.pop()
-        explored.add(node)
         if(node in goals):
             return path
-        # if(node not in explored):
-        for i in range(n-1, 0, -1):
-            if (cost[node][i] != -1) and (i not in explored):
-                nodePath = path + [i]
-                nodeStack.append((i, nodePath))
+        if(node not in explored):
+            explored.add(node)
+            for i in range(n-1, 0, -1):
+                if (cost[node][i] != -1) and (i not in explored):
+                    nodePath = path + [i]
+                    nodeStack.append((i, nodePath))
+        print(nodeStack)
     return []
 
 def UCS_Traversal(cost, start_point, goals):
