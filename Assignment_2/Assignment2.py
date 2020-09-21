@@ -54,9 +54,10 @@ def UCS_Traversal(cost, start_point, goals):
     n = len(cost)
     explored = set()
     frontier = []
-    frontier.append((0, start_point, [start_point]))
+    frontier.append((0, [start_point]))
     while frontier:
-        (pathCost, node, path) = frontier.pop(frontier.index(min(frontier)))
+        (pathCost, path) = frontier.pop(frontier.index(min(frontier)))
+        node = path[-1]
         if node in goals:
             return path
         if(node not in explored):
@@ -64,16 +65,17 @@ def UCS_Traversal(cost, start_point, goals):
             for i in range(1, n):
                 if(cost[node][i]!=-1 and i not in explored):
                     nodePath = path + [i]
-                    frontier.append((pathCost+cost[node][i], i, nodePath))
+                    frontier.append((pathCost+cost[node][i], nodePath))
     return []
 
 def A_star_Traversal(cost, heuristic, start_point, goals):
     n = len(cost)
     explored = set()
     frontier = []
-    frontier.append((0, heuristic[start_point], start_point, [start_point]))
+    frontier.append((0, heuristic[start_point], [start_point]))
     while frontier:
-        (pathCost, pathHeur, node, path) = frontier.pop(frontier.index(min(frontier, key=lambda x: (x[1], x[2], x[3]))))
+        (pathCost, pathHeur, path) = frontier.pop(frontier.index(min(frontier, key=lambda x: (x[1], x[2]))))
+        node = path[-1]
         if node in goals:
             return path
         if(node not in explored):
@@ -82,5 +84,5 @@ def A_star_Traversal(cost, heuristic, start_point, goals):
                 if(cost[node][i]!=-1 and i not in explored):
                     nodePath = path + [i]
                     nodePathCost = pathCost+cost[node][i]
-                    frontier.append((nodePathCost, nodePathCost+heuristic[i], i, nodePath))
+                    frontier.append((nodePathCost, nodePathCost+heuristic[i], nodePath))
     return []
