@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 '''
 Design of a Neural Network from scratch
 
@@ -7,6 +10,33 @@ Mention hyperparameters used and describe functionality in detail in this space
 '''
 
 class NN:
+	def preprocess(in_path, out_path):
+		df = pd.read_csv(in_path)
+
+		#computing (median/mean/mode) imputation values
+		medianAge = df['Age'].median()
+		meanWt = int(df['Weight'].mean())
+		medianDP = df.mode()['Delivery phase'][0]
+		medianHB = df['HB'].median()
+		meanBP = df['BP'].median()
+		education = df.mode()['Education'][0]
+		residence = df.mode()['Residence'][0]
+
+		# replace all null values with the corresponding column's imputated values (inplace)
+		df['Age'].fillna(value=medianAge, inplace=True)
+		df['Weight'].fillna(value=meanWt, inplace=True)
+		df['Delivery phase'].fillna(value=medianDP, inplace=True)
+		df['HB'].fillna(value=medianHB, inplace=True)
+		df['BP'].fillna(value=meanBP, inplace=True)
+		df['Education'].fillna(value=education, inplace=True)
+		df['Residence'].fillna(value=residence, inplace=True)
+
+		#normalizing (scaling) [Age, Weight, HB, BP] columns
+		newdf = df[['Age', 'Weight', 'HB', 'BP']]
+		normalized_df = (newdf-newdf.mean())/newdf.std()
+		df[['Age', 'Weight', 'HB', 'BP']] = normalized_df[['Age', 'Weight', 'HB', 'BP']]
+
+		df.to_csv(out_path, index=False)
 
 	''' X and Y are dataframes '''
 	
@@ -73,7 +103,9 @@ class NN:
 			
 
 
-	
+if __name__ == "__main__":
+	model = NN
+	model.preprocess('LBW_Dataset.csv', 'Final_LBW1.csv')	
 
 
 
