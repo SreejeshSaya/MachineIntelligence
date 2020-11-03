@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 '''
 Design of a Neural Network from scratch
@@ -9,6 +10,45 @@ Mention hyperparameters used and describe functionality in detail in this space
 - carries 1 mark
 '''
 
+def normalize(df):
+	#normalizing (scaling) [Age, Weight, HB, BP] columns
+	newdf = df[['Age', 'Weight', 'HB', 'BP']]
+	normalized_df = (newdf-newdf.mean())/newdf.std()
+	df[['Age', 'Weight', 'HB', 'BP']] = normalized_df[['Age', 'Weight', 'HB', 'BP']]
+	return df
+
+def mse(y_true, y_pred):
+    """
+    Mean Square Error(MSE) error/cost function
+    Input:
+    ---
+    y_true: ground-truth vector
+    y_pred: prediction vector
+    
+    Output:
+    ---
+    cost: mse loss, <scalar>
+    """
+    n = y_pred.shape[1]
+    cost = (1./(2*n)) * np.sum((y_true - y_pred) ** 2)
+    return cost
+
+def sigmoid(z):
+    """
+    Sigmoid activation function   
+    Input:
+    ---
+    z: pre-activation vector at layer l
+        n[l] x batch_size
+       	z_l = w_l * a_(l-1) + b_l
+        
+    Output:
+    --- 
+    a => pointwise activation on z of layer l
+    """
+    a =  1 / (1 + np.exp(-z))
+    return a
+	
 class NN:
 	def preprocess(in_path, out_path):
 		df = pd.read_csv(in_path)
@@ -30,11 +70,6 @@ class NN:
 		df['BP'].fillna(value=meanBP, inplace=True)
 		df['Education'].fillna(value=education, inplace=True)
 		df['Residence'].fillna(value=residence, inplace=True)
-
-		#normalizing (scaling) [Age, Weight, HB, BP] columns
-		newdf = df[['Age', 'Weight', 'HB', 'BP']]
-		normalized_df = (newdf-newdf.mean())/newdf.std()
-		df[['Age', 'Weight', 'HB', 'BP']] = normalized_df[['Age', 'Weight', 'HB', 'BP']]
 
 		df.to_csv(out_path, index=False)
 
@@ -105,7 +140,16 @@ class NN:
 
 if __name__ == "__main__":
 	model = NN
-	model.preprocess('LBW_Dataset.csv', 'Final_LBW1.csv')	
+	model.preprocess('LBW_Dataset.csv', 'Final_LBW1.csv')
+	df = pd.read_csv('Final_LBW1.csv')
+	target = 'Result'
+	X = df.drop(target, axis=1)
+	y = df[target]
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+	X_train = normalize(X_train)
+	X_test = normalize(X_test)
+	print(X_train)
+	print(X_test)
 
 
 
