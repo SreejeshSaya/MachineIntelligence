@@ -3,6 +3,7 @@ Machine Intelligence Assignments
 
 
 Number of layers, number of neurons in each layer, number of iterations, learning rate - All
+Creating a layer class - SJ
 Choice of error and activation functions - Later
 regularization - SJ
 initialisation of weights - PV
