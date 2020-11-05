@@ -206,22 +206,22 @@ if __name__ == "__main__":
     y = df[target]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
     X_train[['Age', 'Weight', 'HB', 'BP']] = n1.fit_transform(X_train[['Age', 'Weight', 'HB', 'BP']])
-    X_test[['Age', 'Weight', 'HB', 'BP']] = n1.transform(X_test[['Age', 'Weight', 'HB', 'BP']])
+    X_test[['Age', 'Weight', 'HB', 'BP']] = n1.transform(X_test[['Age', 'Weight', 'HB', 'BP']])    
     #print(X_train)
     #print(X_test)
     
-    layers = [9, 10, 8, 1]
+    layers = [9, 8, 5, 3, 1]
     alpha = 0.05
-    num_iter = 5000
+    num_iter = 200
     model = NN(layers, alpha, num_iter)
     model.fit(X_train, y_train)
     
-    '''Getting the training set accuracy'''
+    #Getting the training set accuracy
     y_pred = list(model.predict(X_train)[0])
     y_train_orig = list(y_train.values)  
     model.CM(y_train_orig, y_pred)
     
-    '''Getting the testing set accuracy'''
+    #Getting the testing set accuracy
     y_pred = list(model.predict(X_test)[0])
     y_test_orig = list(y_test.values)
     model.CM(y_test_orig, y_pred)
