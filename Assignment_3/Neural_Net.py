@@ -32,9 +32,10 @@ class NN:
         self.params = dict()
         self.grads = dict()
         self.layers = layers
+        #np.random.seed(10)
         for i in range(1, len(layers)):
-            self.params[f"W{i}"] = np.random.randn(self.layers[i], self.layers[i-1]) * 0.01
-            self.params[f"b{i}"] = np.random.randn(self.layers[i], 1) * 0.01
+            self.params[f"W{i}"] = np.random.randn(self.layers[i], self.layers[i-1])
+            self.params[f"b{i}"] = np.random.randn(self.layers[i], 1)
             self.grads[f"W{i}"] = 0
             self.grads[f"b{i}"] = 0
         self.alpha = alpha
@@ -157,7 +158,6 @@ class NN:
         cm[1][0]=fn
         cm[1][1]=tp
 
-        acc = tp+tn/tp+fp+fn+tn
         p= tp/(tp+fp)
         r=tp/(tp+fn)
         f1=(2*p*r)/(p+r)
@@ -165,7 +165,6 @@ class NN:
         print("Confusion Matrix : ")
         print(cm)
         print("\n")
-        print(f"Accuracy : {acc}")
         print(f"Precision : {p}")
         print(f"Recall : {r}")
         print(f"F1 SCORE : {f1}")
