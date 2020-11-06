@@ -68,6 +68,7 @@ class NN:
     def forward_propagation(self):
         self.params["A0"] = self.X
         #print(self.X.shape)
+        reg_weights = 0
         for i in range(1, len(self.layers)):
             #print(self.params[f"A{i-1}"].T.shape)
             self.params[f"Z{i}"] = self.params[f"W{i}"].dot(self.params[f"A{i-1}"]) + self.params[f"b{i}"]
@@ -75,13 +76,18 @@ class NN:
                 self.params[f"A{i}"] = self.relu(self.params[f"Z{i}"])
             else:
                 yhat = self.sigmoid(self.params[f"Z{i}"])
+            #check this whether to take wi or zi ---> idk ....... formula says sum of squares of weights
+            reg_weights += np.sum(np.square(self.params[f"W{i}"]))
         m = len(self.y)
+        #L2 Regularization
+        l2_reg = (1/(2*m)) * reg_weights
         try:
-        	#cross entropy error loss
-        	Error = -(1/m) * (np.sum(np.multiply(np.log(yhat), self.y) + np.multiply((1 - self.y), np.log(1 - yhat))))
+        	#cross entropy error loss with l2_regularizer
+        	Error = -(1/m) * (np.sum(np.multiply(np.log(yhat), self.y) + np.multiply((1 - self.y), np.log(1 - yhat)))) - l2_reg
         except ZeroDivisionError:
         	#print(yhat)
         	Error = 0
+        	#Error = l2_reg
         return yhat, Error
                 
             
