@@ -59,6 +59,14 @@ class NN:
         return np.maximum(0,x)
     
     
+    def tanh(self, x):
+        return np.tanh(x)
+    
+    
+    def der_tanh(self, x):
+        return (1 - np.square(self.tanh(x)))
+    
+    
     def der_relu(self, x):
         x[x<=0] = 0
         x[x>0] = 1
@@ -73,7 +81,8 @@ class NN:
             #print(self.params[f"A{i-1}"].T.shape)
             self.params[f"Z{i}"] = self.params[f"W{i}"].dot(self.params[f"A{i-1}"]) + self.params[f"b{i}"]
             if(i!=(len(self.layers)-1)):
-                self.params[f"A{i}"] = self.relu(self.params[f"Z{i}"])
+                #self.params[f"A{i}"] = self.relu(self.params[f"Z{i}"])
+                self.params[f"A{i}"] = self.tanh(self.params[f"Z{i}"])
             else:
                 yhat = self.sigmoid(self.params[f"Z{i}"])
             #check this whether to take wi or zi ---> idk ....... formula says sum of squares of weights
@@ -99,7 +108,8 @@ class NN:
                 sig = self.sigmoid(self.params[f"Z{i}"])
                 self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * sig * (1-sig)
             else:
-                self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_relu(self.params[f"Z{i}"])
+                #self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_relu(self.params[f"Z{i}"])
+                self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_tanh(self.params[f"Z{i}"])
             self.grads[f"dW{i}"] = (1/m) * np.dot(self.grads[f"dZ{i}"], self.params[f"A{i-1}"].T)
             self.grads[f"db{i}"] = (1/m) * np.sum(self.grads[f"dZ{i}"], axis = 1, keepdims = True)
             self.grads[f"dA{i-1}"] = np.dot(self.params[f"W{i}"].T, self.grads[f"dZ{i}"])
@@ -135,7 +145,8 @@ class NN:
         for i in range(1, len(self.layers)):
             z = self.params[f"W{i}"].dot(A_prev) + self.params[f"b{i}"]
             if(i!=(len(self.layers)-1)):
-               A_prev  = self.relu(z)
+               #A_prev  = self.relu(z)
+                A_prev  = self.tanh(z)
             else:
                 yhat = self.sigmoid(z)
 		
@@ -240,5 +251,4 @@ if __name__ == "__main__":
     y_pred = list(model.predict(X_test)[0])
     y_test_orig = list(y_test.values)
     model.CM(y_test_orig, y_pred)
-    
-    
+        
