@@ -34,7 +34,10 @@ class NN:
         self.layers = layers
         #np.random.seed(10)
         for i in range(1, len(layers)):
-            self.params[f"W{i}"] = np.random.randn(self.layers[i], self.layers[i-1])
+            if(i!=(len(layers)-1)):
+                self.params[f"W{i}"] = np.random.randn(self.layers[i], self.layers[i-1]) * np.sqrt(2/self.layers[i-1])
+            else:
+                self.params[f"W{i}"] = np.random.randn(self.layers[i], self.layers[i-1]) * np.sqrt(1/self.layers[i-1])
             self.params[f"b{i}"] = np.random.randn(self.layers[i], 1)
             self.grads[f"W{i}"] = 0
             self.grads[f"b{i}"] = 0
@@ -210,7 +213,7 @@ if __name__ == "__main__":
     #print(X_test)
     
     layers = [9, 8, 5, 3, 1]
-    alpha = 0.05
+    alpha = 0.08
     num_iter = 200
     model = NN(layers, alpha, num_iter)
     model.fit(X_train, y_train)
