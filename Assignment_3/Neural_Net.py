@@ -34,9 +34,11 @@ class NN:
         self.layers = layers
         #np.random.seed(10)
         for i in range(1, len(layers)):
-            if(i!=(len(layers)-1)):
+            if(i !=(len(layers)-1) ):
+            	#He init
                 self.params[f"W{i}"] = np.random.randn(self.layers[i], self.layers[i-1]) * np.sqrt(2/self.layers[i-1])
             else:
+            	#Xavier init
                 self.params[f"W{i}"] = np.random.randn(self.layers[i], self.layers[i-1]) * np.sqrt(1/self.layers[i-1])
             self.params[f"b{i}"] = np.random.randn(self.layers[i], 1)
             self.grads[f"W{i}"] = 0
@@ -74,7 +76,12 @@ class NN:
             else:
                 yhat = self.sigmoid(self.params[f"Z{i}"])
         m = len(self.y)
-        Error = -(1/m) * (np.sum(np.multiply(np.log(yhat), self.y) + np.multiply((1 - self.y), np.log(1 - yhat))))
+        try:
+        	#cross entropy error loss
+        	Error = -(1/m) * (np.sum(np.multiply(np.log(yhat), self.y) + np.multiply((1 - self.y), np.log(1 - yhat))))
+        except ZeroDivisionError:
+        	#print(yhat)
+        	Error = 0
         return yhat, Error
                 
             
@@ -82,7 +89,7 @@ class NN:
         self.grads[f"dA{len(self.layers)-1}"] = -(np.divide(self.y,yhat) - np.divide((1 - self.y),(1-yhat)))
         m = len(self.y)
         for i in range(len(self.layers)-1, 0, -1):
-            if(i==(len(self.layers)-1)):
+            if(i ==(len(self.layers)-1) ):
                 sig = self.sigmoid(self.params[f"Z{i}"])
                 self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * sig * (1-sig)
             else:
