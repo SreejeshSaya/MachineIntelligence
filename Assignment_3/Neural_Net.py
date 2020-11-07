@@ -87,6 +87,7 @@ class NN:
             if(i!=(len(self.layers)-1)):
                 #self.params[f"A{i}"] = self.relu(self.params[f"Z{i}"])
                 self.params[f"A{i}"] = self.tanh(self.params[f"Z{i}"])
+
             else:
                 yhat = self.sigmoid(self.params[f"Z{i}"])
             #check this whether to take wi or zi ---> idk ....... formula says sum of squares of weights
@@ -156,6 +157,7 @@ class NN:
                 A_prev  = self.tanh(z)
             else:
                 yhat = self.sigmoid(z)
+
 		
         return yhat    
         
