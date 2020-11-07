@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+import warnings
+from pandas.core.common import SettingWithCopyWarning
+warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 
 class normalizer:
     def __init__(self):
@@ -28,6 +31,7 @@ Mention hyperparameters used and describe functionality in detail in this space
 '''
 
 class NN:
+    verbose = 0
     def __init__(self, layers, alpha, num_iter):
         self.params = dict()
         self.grads = dict()
@@ -119,18 +123,21 @@ class NN:
 
      
     ''' X and Y are dataframes '''
-    def fit(self,X,Y):
+    def fit(self,X,Y, verbose = 0):
         '''
         Function that trains the neural network by taking x_train and y_train samples as input
 		'''
+        NN.verbose = verbose
         self.X = X.values.T
         print(self.X.shape)
         self.y = Y.values
         for i in range(self.num_iter):
-            print(f"Iteration number : {i+1}.....", end=" ")
+            if(verbose):
+            	print(f"Iteration number : {i+1}.....", end=" ")
             yhat, Error = self.forward_propagation()
             self.backward_propagation(yhat)
-            print(f"Error : {Error}")
+            if(verbose):
+            	print(f"Error : {Error}")
 
 	
     def predict(self,X):
@@ -224,7 +231,7 @@ def preprocess(in_path, out_path):
 		
     
 if __name__ == "__main__":
-    preprocess('LBW_Dataset.csv', 'Final_LBW.csv')
+    #preprocess('LBW_Dataset.csv', 'Final_LBW.csv')
     n1 = normalizer()
     df = pd.read_csv('Final_LBW.csv')
     target = 'Result'
@@ -240,7 +247,7 @@ if __name__ == "__main__":
     alpha = 0.08
     num_iter = 200
     model = NN(layers, alpha, num_iter)
-    model.fit(X_train, y_train)
+    model.fit(X_train, y_train, verbose = 0)
     
     #Getting the training set accuracy
     y_pred = list(model.predict(X_train)[0])
