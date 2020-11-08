@@ -13,3 +13,5 @@
 - [x] Control verbose & actvn func
 - [x] Moved testing to main.py
 - [ ] Clean/Put comments
+- [ ] *SettingWithCopyWarning, as of for now used ignore in Neural_Net*
+- [ ] DivBy0 might arise in confusion matrix computation, but DivBy0 in error computation is taken care of (error initialised to 0 or l2,to avoid DivBy0,try-except)
