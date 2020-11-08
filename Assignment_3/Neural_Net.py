@@ -32,11 +32,19 @@ Mention hyperparameters used and describe functionality in detail in this space
 
 class NN:
     verbose = 0
-    def __init__(self, layers, alpha, num_iter):
+    activation = 'relu'
+    der_activation = 'der_relu'
+    def __init__(self, layers, alpha, num_iter, activation = 'relu'):
         self.params = dict()
         self.grads = dict()
         self.layers = layers
         #np.random.seed(10)
+        if(activation == 'relu'):
+            NN.activation = activation
+            NN.der_activation = 'der_relu'
+        if(activation == 'tanh'):
+            NN.activation = activation
+            NN.der_activation = 'der_tanh'
         for i in range(1, len(layers)):
             if(i !=(len(layers)-1) ):
             	#He init
@@ -60,21 +68,39 @@ class NN:
 
 
     def relu(self, x):
+        #print("relu")
         return np.maximum(0,x)
     
     
     def tanh(self, x):
+        #print("tanh")
         return np.tanh(x)
     
     
     def der_tanh(self, x):
+        #print("der_tanh")
         return (1 - np.square(self.tanh(x)))
     
     
     def der_relu(self, x):
+        #print("der_relu")
         x[x<=0] = 0
         x[x>0] = 1
         return x
+    
+    def callback(self,  x):
+        #print("acti---- "+NN.activation)
+        if(NN.activation == 'relu'):
+            return self.relu(x)
+        if(NN.activation == 'tanh'):
+            return self.tanh(x)
+        
+    def der_callback(self, x):
+        #print("der_acti------ "+NN.der_activation)
+        if(NN.der_activation == 'der_relu'):
+            return self.der_relu(x)
+        if(NN.der_activation == 'der_tanh'):
+            return self.der_tanh(x)
        
     
     def forward_propagation(self):
@@ -86,7 +112,7 @@ class NN:
             self.params[f"Z{i}"] = self.params[f"W{i}"].dot(self.params[f"A{i-1}"]) + self.params[f"b{i}"]
             if(i!=(len(self.layers)-1)):
                 #self.params[f"A{i}"] = self.relu(self.params[f"Z{i}"])
-                self.params[f"A{i}"] = self.tanh(self.params[f"Z{i}"])
+                self.params[f"A{i}"] = self.callback(self.params[f"Z{i}"])
 
             else:
                 yhat = self.sigmoid(self.params[f"Z{i}"])
@@ -114,7 +140,7 @@ class NN:
                 self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * sig * (1-sig)
             else:
                 #self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_relu(self.params[f"Z{i}"])
-                self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_tanh(self.params[f"Z{i}"])
+               self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_callback(self.params[f"Z{i}"])
             self.grads[f"dW{i}"] = (1/m) * np.dot(self.grads[f"dZ{i}"], self.params[f"A{i-1}"].T)
             self.grads[f"db{i}"] = (1/m) * np.sum(self.grads[f"dZ{i}"], axis = 1, keepdims = True)
             self.grads[f"dA{i-1}"] = np.dot(self.params[f"W{i}"].T, self.grads[f"dZ{i}"])
@@ -154,7 +180,7 @@ class NN:
             z = self.params[f"W{i}"].dot(A_prev) + self.params[f"b{i}"]
             if(i!=(len(self.layers)-1)):
                #A_prev  = self.relu(z)
-                A_prev  = self.tanh(z)
+                A_prev  = self.callback(z)
             else:
                 yhat = self.sigmoid(z)
 
@@ -229,35 +255,4 @@ def preprocess(in_path, out_path):
     df['Residence'].fillna(value=residence, inplace=True)
 
     df.to_csv(out_path, index=False)
-
-		
-    
-if __name__ == "__main__":
-    #preprocess('LBW_Dataset.csv', 'Final_LBW.csv')
-    n1 = normalizer()
-    df = pd.read_csv('Final_LBW.csv')
-    target = 'Result'
-    X = df.drop(target, axis=1)
-    y = df[target]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
-    X_train[['Age', 'Weight', 'HB', 'BP']] = n1.fit_transform(X_train[['Age', 'Weight', 'HB', 'BP']])
-    X_test[['Age', 'Weight', 'HB', 'BP']] = n1.transform(X_test[['Age', 'Weight', 'HB', 'BP']])    
-    #print(X_train)
-    #print(X_test)
-    
-    layers = [9, 8, 5, 3, 1]
-    alpha = 0.08
-    num_iter = 200
-    model = NN(layers, alpha, num_iter)
-    model.fit(X_train, y_train, verbose = 0)
-    
-    #Getting the training set accuracy
-    y_pred = list(model.predict(X_train)[0])
-    y_train_orig = list(y_train.values)  
-    model.CM(y_train_orig, y_pred)
-    
-    #Getting the testing set accuracy
-    y_pred = list(model.predict(X_test)[0])
-    y_test_orig = list(y_test.values)
-    model.CM(y_test_orig, y_pred)
-        
+      
