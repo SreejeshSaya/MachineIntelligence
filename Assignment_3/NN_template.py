@@ -160,7 +160,7 @@ class NN:
 	    
 layers = [9, 8, 1]
 alpha = 0.15
-num_iter = 2495
+num_iter = 250
 model = NN(layers, alpha, num_iter)
 df = pd.read_csv('C:/Vishesh/College/Third year engg/PESU-3rd-year/SEM 5/Machine Intelligence - UE18CS303/A3/Final_LBW.csv')
 X = df.iloc[:, :-1]
