@@ -19,6 +19,13 @@ Design of a Neural Network from scratch
 
 *************<IMP>*************
 Mention hyperparameters used and describe functionality in detail in this space
+alpha
+--------
+Also known as learning rate, alpha specifies what portion of the gradient to consider while updating the weights
+after each epoch. It can also be visualised, graphically, as the step taken in an attempt to reach
+the global minima.
+A large learning rate implies, less epochs and greater probabilities of missing the global minima
+A small learning rate implies, more epochs and greater probabilities of reaching the global minima
 - carries 1 mark
 '''
 
@@ -96,13 +103,25 @@ class NN:
     def der_relu(self, x):
         return ((x > 0) * 1) # [TODO]
     
-    def callback(self,  x):    
+    def callback(self,  x):
+        """
+        Calls the respective activation function as specified by the user, set under __init__
+        default activation function = relu
+        Returns a value inturn returned by the activation function
+
+        """    
         if(self.activation == 'relu'):
             return self.relu(x)
         elif(self.activation == 'tanh'):
             return self.tanh(x)
         
     def der_callback(self, x):
+        """
+        Calls the respective deravative_activation function, which was set implicitly based on activation set by user, set under __init__
+        default activation function = der_relu
+        Returns a value inturn returned by the der_activation function
+
+        """  
         if(self.der_activation == 'der_relu'):
             return self.der_relu(x)
         elif(self.der_activation == 'der_tanh'):
@@ -172,6 +191,7 @@ class NN:
                 sig = self.sigmoid(self.AandZ[f"Z{i}"])
                 self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * sig * (1-sig)
             else:
+                #der_callback calls the respective deravative_activation function set under NN.__init__ 
                self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_callback(self.AandZ[f"Z{i}"])
             self.grads[f"dW{i}"] = (1/m) * np.dot(self.grads[f"dZ{i}"], self.AandZ[f"A{i-1}"].T)
             self.grads[f"db{i}"] = (1/m) * np.sum(self.grads[f"dZ{i}"], axis = 1, keepdims = True)
@@ -286,18 +306,19 @@ class NN:
         
 class Normalizer:
     def __init__(self):
-        self.means = {}
-        self.stds = {}
+        self.means = {} #dictionary - {key, value} :: {attribute_name, attribute's mean}
+        self.stds = {}  #dictionary - {key, value} :: {attribute_name, attribute's standard deviation}
     
     def fit_transform(self, X_train): # X_train is a dataframe.
-        self.means = X_train.mean()
-        self.stds = X_train.std()
-        normalized_df = (X_train - self.means)/self.stds
+        self.means = X_train.mean() #calculates mean or average values for every attribute of the X_train dataframe
+        self.stds = X_train.std() #calculates standard deviation values for every attribute of the X_train dataframe
+        # normalization => z = (X(i) - mean)/std_deviation
+        normalized_df = (X_train - self.means)/self.stds #holds the normalised datframe of X_train 
         X_train = normalized_df
         return X_train
     
     def transform(self, X_test): # X_test is a dataframe.
-        normalized_df = (X_test - self.means)/self.stds
+        normalized_df = (X_test - self.means)/self.stds #normlizes X_test based on mean and standard deviation computed on X_train dataframe
         X_test = normalized_df
         return X_test
 
