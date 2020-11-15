@@ -4,6 +4,18 @@ AUTHORS:
     Vishesh P PES1201800314
     Sreejesh Saya PES1201800293
     Pavan A PES1201800157
+
+Design of a Neural Network from scratch [TODO]
+
+**************************
+Mention hyperparameters used and describe functionality in detail in this space
+
+* alpha
+    Also known as learning rate, alpha specifies what portion of the gradient to consider while updating the weights
+    after each epoch. It can also be visualised, graphically, as the size of step taken in an attempt to reach
+    the global minima.
+    A large learning rate implies, greater probabilities of missing the global minima
+    A small learning rate implies, greater probabilities of reaching the global minima
 '''
 
 # Importing the modules
@@ -14,23 +26,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-''' [TODO]
-Design of a Neural Network from scratch
-
-*************<IMP>*************
-Mention hyperparameters used and describe functionality in detail in this space
-alpha
---------
-Also known as learning rate, alpha specifies what portion of the gradient to consider while updating the weights
-after each epoch. It can also be visualised, graphically, as the step taken in an attempt to reach
-the global minima.
-A large learning rate implies, less epochs and greater probabilities of missing the global minima
-A small learning rate implies, more epochs and greater probabilities of reaching the global minima
-- carries 1 mark
-'''
-
 class NN:
-    verbose = 0 # Display epoch and loss over each epoch 
     def __init__(self, layers, alpha, epoch, activation = 'relu'):
         ''' Initialising the required variables for the neural network. '''
 
@@ -82,22 +78,17 @@ class NN:
     def sigmoid(self, x):
         return 1/(1 + np.exp(-x))
     
-
-
     # Given a numpy array x, apply the reLU function for every element in x
     def relu(self, x):
         return np.maximum(0,x)
-    
     
     # Given a numpy array x, apply tanH function for every element in x.
     def tanh(self, x):
         return np.tanh(x)
     
-    
     # Returns the derivative of the tanh function.
     def der_tanh(self, x):
         return (1 - np.square(self.tanh(x)))
-    
     
     # Returns the derivative of the ReLU function.
     def der_relu(self, x):
@@ -108,7 +99,6 @@ class NN:
         Calls the respective activation function as specified by the user, set under __init__
         default activation function = relu
         Returns a value inturn returned by the activation function
-
         """    
         if(self.activation == 'relu'):
             return self.relu(x)
@@ -120,7 +110,6 @@ class NN:
         Calls the respective deravative_activation function, which was set implicitly based on activation set by user, set under __init__
         default activation function = der_relu
         Returns a value inturn returned by the der_activation function
-
         """  
         if(self.der_activation == 'der_relu'):
             return self.der_relu(x)
@@ -178,12 +167,12 @@ class NN:
         	# Cross entropy loss with l2_regularizer
         	loss = -(1/m) * (np.sum(np.multiply(np.log(yhat), self.y) + np.multiply((1 - self.y), np.log(1 - yhat)))) - l2_reg
         except ZeroDivisionError:
-        	print("ZeroDivisionError encountered while calculating loss. Run again.")   	
+        	print("ZeroDivisionError encountered while calculating loss. Run again.")
 
         return yhat, loss
                 
             
-    def backward_propagation(self, yhat):
+    def backward_propagation(self, yhat): # [TODO]
         self.grads[f"dA{len(self.layers)-1}"] = -(np.divide(self.y,yhat) - np.divide((1 - self.y),(1-yhat)))
         m = len(self.y) # Size of the vector of actual values.
         for i in range(len(self.layers)-1, 0, -1):
@@ -212,8 +201,6 @@ class NN:
         Learning-rate decay has also been implemented : At the end of every epoch, the learning rate is reduced by a factor,
         helping the loss function to converge better at the local/global minima.
         '''
-        # If verbose is set to 1, then the loss is displayed after every epoch
-        NN.verbose = verbose
 
         # Assigning the matrix of features X to self.X.       
         self.X = X.values.T
@@ -221,6 +208,7 @@ class NN:
         self.y = Y.values
 
         for i in range(self.epoch):
+            # If verbose is set to 1, epoch number and loss is displayed after every epoch
             if(verbose == 1):
             	print(f"Epoch {i+1} - ", end=" ")
             yhat, loss = self.forward_propagation() # Forward propagation
@@ -238,7 +226,7 @@ class NN:
 		yhat is a list of the predicted value for df X
 
         """
-        # A_prev represents the set of inputs obtaied from the previous layer provided to the current layer's neurons.
+        # A_prev represents the set of inputs obtained from the previous layer provided to the current layer's neurons.
         A_prev = X.values.T
 
         for i in range(1, len(self.layers)):
@@ -284,10 +272,10 @@ class NN:
                 fp=fp+1
             if(y_test[i]==0 and y_test_obs[i]==1):
                 fn=fn+1
-        cm[0][0]=tn
-        cm[0][1]=fp
-        cm[1][0]=fn
-        cm[1][1]=tp
+        cm[0][0]=tn # True Negative
+        cm[0][1]=fp # False Positive
+        cm[1][0]=fn # False Negative
+        cm[1][1]=tp # True Positive
 
         try:
             p= tp/(tp+fp)
@@ -314,18 +302,18 @@ class Normalizer:
         self.stds = X_train.std() #calculates standard deviation values for every attribute of the X_train dataframe
         # normalization => z = (X(i) - mean)/std_deviation
         normalized_df = (X_train - self.means)/self.stds #holds the normalised datframe of X_train 
-        X_train = normalized_df
-        return X_train
+        return normalized_df
     
     def transform(self, X_test): # X_test is a dataframe.
         normalized_df = (X_test - self.means)/self.stds #normlizes X_test based on mean and standard deviation computed on X_train dataframe
-        X_test = normalized_df
-        return X_test
+        return normalized_df
 
 
         
-def preprocess(df):
+def preprocess(df): #[TODO]
     # Compute (median/mean/mode) imputation values
+    # For the null values present in the dataset, we have chosen either the mean, median or mode 
+    # to fill in depending on the appropriateness of the values for the column
     medianAge = df['Age'].median()
     meanWt = int(df['Weight'].mean())
     medianDP = df.mode()['Delivery phase'][0]
@@ -343,16 +331,27 @@ def preprocess(df):
     df['Education'].fillna(value=education, inplace=True)
     df['Residence'].fillna(value=residence, inplace=True)
     
+    # Normalizer object to normalize the training and testing sets
     norm = Normalizer()
+
+    # Separate the feature set and the target variable and store in X and y respectively
     target = 'Result'
     X = df.drop(target, axis=1)
     y = df[target]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-    X_train[['Age', 'Weight', 'HB', 'BP']] = norm.fit_transform(X_train[['Age', 'Weight', 'HB', 'BP']])
-    X_test[['Age', 'Weight', 'HB', 'BP']] = norm.transform(X_test[['Age', 'Weight', 'HB', 'BP']])
-    
-    return X_train, X_test, y_train, y_test 
 
+    # Splitting the dataset into training set and testing set using sklearn library
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+    
+    # Copying the df to avoid SettingWithCopy Warning - Pandas
+    X_train = X_train.copy()
+    X_test = X_test.copy()
+    y_train = y_train.copy()
+    y_test = y_test.copy()
+
+    # Normalize the numerical values in the dataset
+    X_train.loc[:, ['Age', 'Weight', 'HB', 'BP']] = norm.fit_transform(X_train[['Age', 'Weight', 'HB', 'BP']])
+    X_test.loc[:, ['Age', 'Weight', 'HB', 'BP']] = norm.transform(X_test[['Age', 'Weight', 'HB', 'BP']])
+    return X_train, X_test, y_train, y_test 
 
 if __name__=='__main__':
     # Load dataset into a panda dataframe
@@ -365,13 +364,14 @@ if __name__=='__main__':
     # List of the layers in the NN model, with each element representing a layer and the element value represents the number of neurons in the layer
     # First Layer: 9 (Number of features served as INPUT)
     # Last Layer: 1 (OUTPUT Binary Classification, a value between 0 and 1)
-    layers = [9, 2, 3, 5, 1]
+    # Other Layers: Hidden layers
+    layers = [9, 8, 5, 3, 1]
 
     # alpha: The learning rate used in backpropagation while training the model
     alpha = 0.06
 
     # Number of iterations for training the model over the training dataset (forward propagation + backward propagation)
-    epoch = 200
+    epoch = 250
 
     # Activation function for the hidden layers 
     actvn_func = 'relu'
@@ -389,10 +389,13 @@ if __name__=='__main__':
     print("\n---- Evaluation ----")
     print("\nOVER TRAINING DATASET")
     model.CM(y_train_orig, y_pred)
+
+    print("---- ---- ---- ---- ----")
           
     # Getting the testing set accuracy
     y_pred = list(model.predict(X_test)[0])
     y_test_orig = list(y_test.values)
 
-    print("\nOVER TESTING DATASET\n")
+    print("\nOVER TESTING DATASET")
     model.CM(y_test_orig, y_pred)
+    print("---- ---- ---- ---- ----")
