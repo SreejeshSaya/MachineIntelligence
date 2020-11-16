@@ -55,7 +55,8 @@ class NN:
             self.activation = activation
             self.der_activation = 'der_tanh'
 
-        for i in range(1, len(layers)):            
+        for i in range(1, len(layers)):
+            np.random.seed(0)            
             self.params[f"W{i}"] = np.random.randn(self.layers[i], self.layers[i-1]) * np.sqrt(1/self.layers[i-1])
             # Weights initialised randomly in numpy matrices of the order (n[l], n[l-1]) where 
             # n[l] is the number of neurons in current layer
@@ -340,7 +341,7 @@ def preprocess(df): #[TODO]
     y = df[target]
 
     # Splitting the dataset into training set and testing set using sklearn library
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
     
     # Copying the df to avoid SettingWithCopy Warning - Pandas
     X_train = X_train.copy()
@@ -365,10 +366,10 @@ if __name__=='__main__':
     # First Layer: 9 (Number of features served as INPUT)
     # Last Layer: 1 (OUTPUT Binary Classification, a value between 0 and 1)
     # Other Layers: Hidden layers
-    layers = [9, 8, 5, 3, 1]
+    layers = [9, 75, 45, 1]
 
     # alpha: The learning rate used in backpropagation while training the model
-    alpha = 0.06
+    alpha = 0.015
 
     # Number of iterations for training the model over the training dataset (forward propagation + backward propagation)
     epoch = 250
