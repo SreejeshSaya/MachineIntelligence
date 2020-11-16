@@ -340,7 +340,7 @@ def preprocess(df): #[TODO]
     y = df[target]
 
     # Splitting the dataset into training set and testing set using sklearn library
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
     
     # Copying the df to avoid SettingWithCopy Warning - Pandas
     X_train = X_train.copy()
