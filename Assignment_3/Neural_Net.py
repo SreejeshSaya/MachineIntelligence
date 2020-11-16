@@ -174,21 +174,53 @@ class NN:
                 
             
     def backward_propagation(self, yhat): # [TODO]
+        '''
+        Backward propagation is an algorithm which uses gradient descent to tweak the weights and biases of each neuron in every layer.
+        Given a neural network and an error function, this algorithm determines the gradient of the error function with respect to
+                    i. the neural network's weights which is multiplied with the learning rate and together subtracted from the original weights' values
+                    ii. the biases of the neurons in each layer which is multiplied with the learning rate and together subtracted from the original biases' values
+                    
+        The gradient of the error function with respect to the Activations of layer i is of the form
+                dA[i]
+        The gradient of the error function with  respect to the Linear Combiations(Z) of each layer i is of the form
+                dZ[i]
+        The gradient of the error function with  respect to the Weights of each layer i is of the form
+                dW[i]
+        The gradients of the error function with respect to the Biases of each layer is of the form
+                db[i]
+                
+        The formulae to determine the above mentioned variables are specified below.
+        
+        '''
         self.grads[f"dA{len(self.layers)-1}"] = -(np.divide(self.y,yhat) - np.divide((1 - self.y),(1-yhat)))
+        #The gradient of the Error function with respect to the Activation of the last layer is implemented separately in the previous line. 
+        
         m = len(self.y) # Size of the vector of actual values.
-        for i in range(len(self.layers)-1, 0, -1):
+        
+        for i in range(len(self.layers)-1, 0, -1): #Iterating through each layer 
             if(i ==(len(self.layers)-1) ):
                 sig = self.sigmoid(self.AandZ[f"Z{i}"])
                 self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * sig * (1-sig)
+                #dZ[i] = dA[i] * act(Z[i])'
+                #where act(Z[i])' is the derivative of the activation of Z[i].
+            
             else:
                 #der_callback calls the respective deravative_activation function set under NN.__init__ 
                self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_callback(self.AandZ[f"Z{i}"])
+               #dZ[i] = dA[i] * act(Z[i])'
+               #where act(Z[i])' is the derivative of the activation of Z[i].
+            
             self.grads[f"dW{i}"] = (1/m) * np.dot(self.grads[f"dZ{i}"], self.AandZ[f"A{i-1}"].T)
+            #dW[i] = (1/m) * (dZ[i] . A[i-1](transpose))
+            
             self.grads[f"db{i}"] = (1/m) * np.sum(self.grads[f"dZ{i}"], axis = 1, keepdims = True)
+            #db[i] = (1/m) * (Sum of all elements of dZ[i])
+            
             self.grads[f"dA{i-1}"] = np.dot(self.params[f"W{i}"].T, self.grads[f"dZ{i}"])
+            #dA[i-1] = W[i](transpose) . dZ[i]
              
-            self.params[f"W{i}"] -= (self.alpha * self.grads[f"dW{i}"])
-            self.params[f"b{i}"] -= (self.alpha * self.grads[f"db{i}"])
+            self.params[f"W{i}"] -= (self.alpha * self.grads[f"dW{i}"]) #Gradient descent
+            self.params[f"b{i}"] -= (self.alpha * self.grads[f"db{i}"]) #Gradient descent
 
      
     ''' X and Y are dataframes '''
@@ -282,12 +314,14 @@ class NN:
             p= tp/(tp+fp)
             r=tp/(tp+fn)
             f1=(2*p*r)/(p+r)
+            acc = (tp+tn)/(tp+tn+fp+fn)
             print("Confusion Matrix : ")
             print(cm)
             print("\n")
             print(f"Precision : {p}")
             print(f"Recall : {r}")
             print(f"F1 SCORE : {f1}")
+            print(f"Accuracy score : {acc}")
         except ZeroDivisionError:
             print("ZeroDivisionError encountered while computing the confusion matrix. Run again.")
 		
@@ -366,13 +400,13 @@ if __name__=='__main__':
     # First Layer: 9 (Number of features served as INPUT)
     # Last Layer: 1 (OUTPUT Binary Classification, a value between 0 and 1)
     # Other Layers: Hidden layers
-    layers = [9, 75, 45, 1]
+    layers = [9, 8, 5, 3, 1]
 
     # alpha: The learning rate used in backpropagation while training the model
-    alpha = 0.015
+    alpha = 0.05
 
     # Number of iterations for training the model over the training dataset (forward propagation + backward propagation)
-    epoch = 250
+    epoch = 200
 
     # Activation function for the hidden layers 
     actvn_func = 'relu'
