@@ -135,7 +135,7 @@ class NN:
 
         # L2 regularisation = (lambda)*[ sigma( w[i]*w[i] )]
         # Reg_weights = [sigma( w[i]*w[i] )]
-        reg_weights = 0 
+        self.reg_weights = 0 
         for i in range(1, len(self.layers)):
             self.AandZ[f"Z{i}"] = self.params[f"W{i}"].dot(self.AandZ[f"A{i-1}"]) + self.params[f"b{i}"]
             # Z[i] = W[i].T*A[i-1] + b[i]
@@ -154,19 +154,19 @@ class NN:
                 # The activation function of the output layer is sigmoid to retrieve a value between 0 and 1 for the entire vector yhat.
                 yhat = self.sigmoid(self.AandZ[f"Z{i}"])
 
-            reg_weights += np.sum(np.square(self.params[f"W{i}"]))
+            self.reg_weights += np.sum(np.square(self.params[f"W{i}"]))
 
         m = len(self.y) # Number of records 
 
         # L2 Regularization
-        lamda = 1
-        l2_reg = (lamda/(2*m)) * reg_weights
+        self.lamda = 1
+        self.l2_reg = (self.lamda/(2*m)) * self.reg_weights
         try:
             # Loss function : Cross entropy. 
             # The loss is calculated after predicting the values for the entire training set (Batch processing).
             # L2 regularization combined with the loss function to prevent overfitting.
         	# Cross entropy loss with l2_regularizer
-        	loss = -(1/m) * (np.sum(np.multiply(np.log(yhat), self.y) + np.multiply((1 - self.y), np.log(1 - yhat)))) - l2_reg
+        	loss = -(1/m) * (np.sum(np.multiply(np.log(yhat), self.y) + np.multiply((1 - self.y), np.log(1 - yhat)))) - self.l2_reg
         except ZeroDivisionError:
         	print("ZeroDivisionError encountered while calculating loss. Run again.")
 
@@ -192,11 +192,11 @@ class NN:
         The formulae to determine the above mentioned variables are specified below.
         
         '''
-        self.grads[f"dA{len(self.layers)-1}"] = -(np.divide(self.y,yhat) - np.divide((1 - self.y),(1-yhat)))
-        #The gradient of the Error function with respect to the Activation of the last layer is implemented separately in the previous line. 
-        
+    
         m = len(self.y) # Size of the vector of actual values.
-        
+        self.grads[f"dA{len(self.layers)-1}"] = -(np.divide(self.y,yhat) - np.divide((1 - self.y),(1-yhat))) - ((self.lamda * self.reg_weights)/m)
+        #The gradient of the Error function with respect to the Activation of the last layer is implemented separately in the previous line. 
+                      
         for i in range(len(self.layers)-1, 0, -1): #Iterating through each layer 
             if(i ==(len(self.layers)-1) ):
                 sig = self.sigmoid(self.AandZ[f"Z{i}"])
