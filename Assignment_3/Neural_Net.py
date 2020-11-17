@@ -27,7 +27,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 class NN:
-    def __init__(self, layers, alpha, epoch, activation = 'relu'):
+    def __init__(self, layers, alpha, epoch, lamda=0, activation = 'relu'):
         ''' Initialising the required variables for the neural network. '''
 
         # Weights biases for every layer stored in a dictionary in the form of a numpy matrix 
@@ -39,7 +39,9 @@ class NN:
         self.AandZ = dict()  # [TODO NAME CHANGE]
 
         # Stores the gradients of the weights for all the layers in a dictionary.
-        self.grads = dict() 
+        self.grads = dict()
+
+        self.lamda = lamda
 
         #List of values of the form [9, n, 1] where 
             # 9 is the number of input features
@@ -56,7 +58,7 @@ class NN:
             self.der_activation = 'der_tanh'
 
         for i in range(1, len(layers)):
-            np.random.seed(0)            
+            np.random.seed(1)            
             self.params[f"W{i}"] = np.random.randn(self.layers[i], self.layers[i-1]) * np.sqrt(1/self.layers[i-1])
             # Weights initialised randomly in numpy matrices of the order (n[l], n[l-1]) where 
             # n[l] is the number of neurons in current layer
@@ -159,7 +161,6 @@ class NN:
         m = len(self.y) # Number of records 
 
         # L2 Regularization
-        self.lamda = 1
         self.l2_reg = (self.lamda/(2*m)) * self.reg_weights
         try:
             # Loss function : Cross entropy. 
@@ -376,7 +377,7 @@ def normalize(df):
     y = df[target]
 
     # Splitting the dataset into training set and testing set using sklearn library
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) #[TODO] No random state
     
     # Copying the df to avoid SettingWithCopy Warning - Pandas
     X_train = X_train.copy()
@@ -407,10 +408,11 @@ if __name__=='__main__':
     # First Layer: 9 (Number of features served as INPUT)
     # Last Layer: 1 (OUTPUT Binary Classification, a value between 0 and 1)
     # Other Layers: Hidden layers
-    layers = [9, 8, 5, 3, 1]
+    # layers = [9, 8, 5, 3, 1]
+    layers = [9, 15, 7, 11, 14, 8, 12, 1] #alp = 0.85
 
     # alpha: The learning rate used in backpropagation while training the model
-    alpha = 0.05
+    alpha = 0.85
 
     # Number of iterations for training the model over the training dataset (forward propagation + backward propagation)
     epoch = 200
