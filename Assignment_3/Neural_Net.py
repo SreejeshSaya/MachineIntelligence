@@ -346,13 +346,13 @@ class Normalizer:
 
 
         
-def preprocess(df): #[TODO]
+def data_cleaning(df): #[TODO]
     # Compute (median/mean/mode) imputation values
     # For the null values present in the dataset, we have chosen either the mean, median or mode 
     # to fill in depending on the appropriateness of the values for the column
     medianAge = df['Age'].median()
     meanWt = int(df['Weight'].mean())
-    medianDP = df.mode()['Delivery phase'][0]
+    modeDP = df.mode()['Delivery phase'][0]
     medianHB = df['HB'].median()
     meanBP = df['BP'].median()
     education = df.mode()['Education'][0]
@@ -361,7 +361,7 @@ def preprocess(df): #[TODO]
     # Replace all null values with the corresponding column's imputated values (inplace)
     df['Age'].fillna(value=medianAge, inplace=True)
     df['Weight'].fillna(value=meanWt, inplace=True)
-    df['Delivery phase'].fillna(value=medianDP, inplace=True)
+    df['Delivery phase'].fillna(value=modeDP, inplace=True)
     df['HB'].fillna(value=medianHB, inplace=True)
     df['BP'].fillna(value=meanBP, inplace=True)
     df['Education'].fillna(value=education, inplace=True)
@@ -394,7 +394,7 @@ def normalize(df):
 if __name__=='__main__':
     # Load dataset into a panda dataframe
     # df = pd.read_csv('LBW_Dataset.csv')
-    # preprocess(df)
+    # data_cleaning(df)
     # df.to_csv('processedLBW_Dataset.csv', index=False)
 
     # Load preprocessed dataset into a panda dataframe
@@ -409,10 +409,10 @@ if __name__=='__main__':
     # Last Layer: 1 (OUTPUT Binary Classification, a value between 0 and 1)
     # Other Layers: Hidden layers
     # layers = [9, 8, 5, 3, 1]
-    layers = [9, 15, 7, 11, 14, 8, 12, 1] 
+    layers = [9, 5, 9, 9, 5, 15, 9, 1]
 
     # alpha: The learning rate used in backpropagation while training the model
-    alpha = 0.85
+    alpha = 0.6
 
     # Number of iterations for training the model over the training dataset (forward propagation + backward propagation)
     epoch = 200
