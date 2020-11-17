@@ -377,7 +377,7 @@ def normalize(df):
     y = df[target]
 
     # Splitting the dataset into training set and testing set using sklearn library
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) #[TODO] No random state
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) #[TODO] No random state
     
     # Copying the df to avoid SettingWithCopy Warning - Pandas
     X_train = X_train.copy()
@@ -409,7 +409,7 @@ if __name__=='__main__':
     # Last Layer: 1 (OUTPUT Binary Classification, a value between 0 and 1)
     # Other Layers: Hidden layers
     # layers = [9, 8, 5, 3, 1]
-    layers = [9, 15, 7, 11, 14, 8, 12, 1] #alp = 0.85
+    layers = [9, 15, 7, 11, 14, 8, 12, 1] 
 
     # alpha: The learning rate used in backpropagation while training the model
     alpha = 0.85
