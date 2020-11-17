@@ -5,6 +5,36 @@ AUTHORS:
     Sreejesh Saya PES1201800293
     Pavan A PES1201800157
 
+
+INSTRUCTIONS FOR EXECUTION
+    Create a directory named PESU-MI_0157_0293_0314 and extract the contents of PESU-MI_0157_0293_0314.zip into this directory.
+    	cd PESU-MI_0157_0293_0314/
+
+    Ensure the directory structure looks exactly as specified below [output of the tree command]
+        PESU-MI_0157_0293_0314/
+        ├── data
+        │   ├── LBW_Dataset.csv
+        │   └── processedLBW_Dataset.csv
+        ├── README.txt
+        └── src
+            ├── LBW_Dataset.csv
+            ├── Neural_Net.py
+            ├── preprocess.py
+            └── processedLBW_Dataset.csv
+    
+    [IMPORTANT]
+    Ensure the current working directory is PESU-MI_0157_0293_0314/
+    	pwd : PESU-MI_0157_0293_0314/
+
+    Run the file named 'Neural_Net.py' using the command, on the terminal/command prompt
+	python3 src/Neural_Net.py 
+
+    Neural_Net.py imports all the classes and functions from preprocess.py
+    The source code references the csv files inside the src directory.
+
+
+
+
 DATA CLEANING
     The missing values in the numerical attributes such as Age, Weight, HB, BP were imputed with the means/medians of those respective attributes, 
     whichever was better suited. The missing values in the categorical attributes such as Delivery Phase, Education and Residence were imputed with the 
