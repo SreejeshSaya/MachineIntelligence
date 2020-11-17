@@ -5,5 +5,5 @@ AUTHORS:
     Pavan A PES1201800157
 
 
-Take care of TODO in main file
-Write Readme.md
+Done dana done
+Apes together strong :)
