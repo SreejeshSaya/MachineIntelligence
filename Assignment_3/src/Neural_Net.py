@@ -346,12 +346,12 @@ class NN:
 
 if __name__=='__main__':
     # Load dataset into a panda dataframe
-    # df = pd.read_csv('./LBW_Dataset.csv')
+    # df = pd.read_csv('LBW_Dataset.csv')
     # data_cleaning(df)
-    # df.to_csv('./processedLBW_Dataset.csv', index=False)
+    # df.to_csv('processedLBW_Dataset.csv', index=False)
 
     # Load preprocessed dataset into a panda dataframe
-    df = pd.read_csv('./processedLBW_Dataset.csv')
+    df = pd.read_csv('processedLBW_Dataset.csv')
 
     # Perform preprocessing on the dataset to fill in null values and normalize numerical values
     # Also perform splitting of dataset into training and testing datasets and return them
