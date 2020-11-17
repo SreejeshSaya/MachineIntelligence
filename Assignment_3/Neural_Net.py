@@ -195,7 +195,7 @@ class NN:
         '''
     
         m = len(self.y) # Size of the vector of actual values.
-        self.grads[f"dA{len(self.layers)-1}"] = -(np.divide(self.y,yhat) - np.divide((1 - self.y),(1-yhat))) - ((self.lamda * self.reg_weights)/m)
+        self.grads[f"dA{len(self.layers)-1}"] = -(np.divide(self.y,yhat) - np.divide((1 - self.y),(1-yhat)))
         #The gradient of the Error function with respect to the Activation of the last layer is implemented separately in the previous line. 
                       
         for i in range(len(self.layers)-1, 0, -1): #Iterating through each layer 
@@ -220,8 +220,8 @@ class NN:
             self.grads[f"dA{i-1}"] = np.dot(self.params[f"W{i}"].T, self.grads[f"dZ{i}"])
             #dA[i-1] = W[i](transpose) . dZ[i]
              
-            self.params[f"W{i}"] -= (self.alpha * self.grads[f"dW{i}"]) #Gradient descent
-            self.params[f"b{i}"] -= (self.alpha * self.grads[f"db{i}"]) #Gradient descent
+            self.params[f"W{i}"] -= (self.alpha * (self.grads[f"dW{i}"] + (self.lamda*np.sum(self.params[f"W{i}"])/m))) #Gradient descent
+            self.params[f"b{i}"] -= (self.alpha * (self.grads[f"db{i}"] + (self.lamda*np.sum(self.params[f"b{i}"])/m))) #Gradient descent
 
      
     ''' X and Y are dataframes '''
@@ -409,7 +409,7 @@ if __name__=='__main__':
     # Last Layer: 1 (OUTPUT Binary Classification, a value between 0 and 1)
     # Other Layers: Hidden layers
     # layers = [9, 8, 5, 3, 1]
-    layers = [9, 5, 9, 9, 5, 15, 9, 1]
+    layers = [9, 7, 7, 15, 9, 15, 5, 1]
 
     # alpha: The learning rate used in backpropagation while training the model
     alpha = 0.6
