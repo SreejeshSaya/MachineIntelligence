@@ -366,6 +366,7 @@ def preprocess(df): #[TODO]
     df['Education'].fillna(value=education, inplace=True)
     df['Residence'].fillna(value=residence, inplace=True)
     
+def normalize(df):
     # Normalizer object to normalize the training and testing sets
     norm = Normalizer()
 
@@ -388,13 +389,19 @@ def preprocess(df): #[TODO]
     X_test.loc[:, ['Age', 'Weight', 'HB', 'BP']] = norm.transform(X_test[['Age', 'Weight', 'HB', 'BP']])
     return X_train, X_test, y_train, y_test 
 
+
 if __name__=='__main__':
     # Load dataset into a panda dataframe
-    df = pd.read_csv('LBW_Dataset.csv')
+    # df = pd.read_csv('LBW_Dataset.csv')
+    # preprocess(df)
+    # df.to_csv('processedLBW_Dataset.csv', index=False)
+
+    # Load preprocessed dataset into a panda dataframe
+    df = pd.read_csv('processedLBW_Dataset.csv')
 
     # Perform preprocessing on the dataset to fill in null values and normalize numerical values
     # Also perform splitting of dataset into training and testing datasets and return them
-    X_train, X_test, y_train, y_test = preprocess(df)
+    X_train, X_test, y_train, y_test = normalize(df)
 
     # List of the layers in the NN model, with each element representing a layer and the element value represents the number of neurons in the layer
     # First Layer: 9 (Number of features served as INPUT)
