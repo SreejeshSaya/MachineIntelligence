@@ -8,7 +8,7 @@ AUTHORS:
 
 INSTRUCTIONS FOR EXECUTION
     Create a directory named PESU-MI_0157_0293_0314 and extract the contents of PESU-MI_0157_0293_0314.zip into this directory.
-    	cd PESU-MI_0157_0293_0314/
+    	cd PESU-MI_0157_0293_0314/src
 
     Ensure the directory structure looks exactly as specified below [output of the tree command]
         PESU-MI_0157_0293_0314/
@@ -24,10 +24,10 @@ INSTRUCTIONS FOR EXECUTION
     
     [IMPORTANT]
     Ensure the current working directory is PESU-MI_0157_0293_0314/
-    	pwd : PESU-MI_0157_0293_0314/
+    	pwd : PESU-MI_0157_0293_0314/src
 
     Run the file named 'Neural_Net.py' using the command, on the terminal/command prompt
-	python3 src/Neural_Net.py 
+	python3 Neural_Net.py 
 
     Neural_Net.py imports all the classes and functions from preprocess.py
     The source code references the csv files inside the src directory.
