@@ -5,7 +5,7 @@ AUTHORS:
     Sreejesh Saya PES1201800293
     Pavan A PES1201800157
 
-Design of a Neural Network from scratch [TODO]
+Design of a Neural Network from scratch
 
 **************************
 Mention hyperparameters used and describe functionality in detail in this space
@@ -18,7 +18,7 @@ Every element in the list between 9 and 1 corresponds to the number of neurons i
     process of trial and error, but serves the purpose of providing accuracies beyond 85% 
     for the training and testing sets.
 
-Epoch: The epoch was set to 250 [in the range 200-300]. We observed that in our testing, going below 200 would result in underfitting wherein the neural network couldn’t learn the features completely whereas setting it above 300 resulted in overfitting and the model failed miserably to classify the testing set with accuracy of barely above 70%
+Epoch: The epoch was set to 250 [testing proved best results with epoch in the range 200-300]. We observed that in our testing, going below 200 would result in underfitting wherein the neural network couldn’t learn the features completely whereas setting it above 300 resulted in overfitting and the model failed miserably to classify the testing set with accuracy of barely above 70%
 
 alpha = 0.6
 Also known as the learning rate, alpha serves the purpose of controlling the step taken during gradient descent in order to reach the global minima. Our neural network gave the best performance when alpha is set to 0.6 for the above mentioned layer’s configuration.
@@ -48,9 +48,9 @@ class NN:
         self.params = dict() 
 
         # Dictionary containing all the Z's and A's of every layer.
-        #   Z[i] = W[i].T*A[i-1] + b[i] [TODO]
+        #   Z[i] = W[i].T*A[i-1] + b[i]
         #   A[i] = activation(Z[i])
-        self.layer_output = dict()  # [TODO NAME CHANGE]
+        self.layer_output = dict()
 
         # Stores the gradients of the weights for all the layers in a dictionary.
         self.grads = dict()
@@ -109,7 +109,7 @@ class NN:
     
     # Returns the derivative of the ReLU function.
     def der_relu(self, x):
-        return ((x > 0) * 1) # [TODO]
+        return ((x > 0) * 1)
     
     def callback(self,  x):
         """
@@ -188,7 +188,7 @@ class NN:
         return yhat, loss
                 
             
-    def backward_propagation(self, yhat): # [TODO]
+    def backward_propagation(self, yhat):
         '''
         Backward propagation is an algorithm which uses gradient descent to tweak the weights and biases of each neuron in every layer.
         Given a neural network and an error function, this algorithm determines the gradient of the error function with respect to
@@ -360,7 +360,7 @@ class Normalizer:
 
 
         
-def data_cleaning(df): #[TODO]
+def data_cleaning(df):
     # Compute (median/mean/mode) imputation values
     # For the null values present in the dataset, we have chosen either the mean, median or mode 
     # to fill in depending on the appropriateness of the values for the column
@@ -391,7 +391,7 @@ def normalize(df):
     y = df[target]
 
     # Splitting the dataset into training set and testing set using sklearn library
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) #[TODO] No random state
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
     
     # Copying the df to avoid SettingWithCopy Warning - Pandas
     X_train = X_train.copy()
