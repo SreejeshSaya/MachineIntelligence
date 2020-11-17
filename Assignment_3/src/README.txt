@@ -83,7 +83,9 @@ TRAINING THE NEURAL NETWORK
         was set to be the output of that layer, which was passed as input to the next layer. Except the output layer, which used Sigmoid as the activation 
         function, the neural network  maintained ReLU as the activation function for every other layer. The outputs obtained at the output layer were the 
         predicted values. These values were later used to calculate the loss, combined with L2 Regularization which is a process of introducing additional 
-        information in order to prevent overfitting. The predicted values were passed to the backward propagation to perform gradient descent.
+        information in order to prevent overfitting. The predicted values were passed to the backward propagation to perform gradient descent. The loss 
+	function used here was Binary Cross-Entropy. 
+
         In the Backward propagation function, the predicted values and the original values of the output were used to calculate the derivatives of the loss 
         function with respect to the weights and biases of every neuron of every layer. Chain rule was used to calculate the derivatives, also called 
         gradients. These gradients were later multiplied with the learning rate and subtracted from the original weights/biases respectively to tune 
