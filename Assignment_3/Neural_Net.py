@@ -10,12 +10,26 @@ Design of a Neural Network from scratch [TODO]
 **************************
 Mention hyperparameters used and describe functionality in detail in this space
 
-* alpha
-    Also known as learning rate, alpha specifies what portion of the gradient to consider while updating the weights
-    after each epoch. It can also be visualised, graphically, as the size of step taken in an attempt to reach
-    the global minima.
-    A large learning rate implies, greater probabilities of missing the global minima
-    A small learning rate implies, greater probabilities of reaching the global minima
+The following hyperparameters were passed to our neural network.
+Number of layers and number of neurons in each layer : The input layer consists of 9 neurons since there are 9 features taken in as input from each record of the training set. The output layer consists of 1 neuron since we only need 1 output(Binary classification) for every record provided as input to the neural network. Hence these two values are set accordingly as the first and last elements of the list respectively.
+Every element in the list between 9 and 1 corresponds to the number of neurons in that      
+    particular layer. The configuration of the layers and neurons are as follows : 
+    [9, 7, 7, 15, 9, 15, 5, 1]. This configuration was obtained after a very long 
+    process of trial and error, but serves the purpose of providing accuracies beyond 85% 
+    for the training and testing sets.
+
+Epoch: The epoch was set to 250 [in the range 200-300]. We observed that in our testing, going below 200 would result in underfitting wherein the neural network couldn’t learn the features completely whereas setting it above 300 resulted in overfitting and the model failed miserably to classify the testing set with accuracy of barely above 70%
+
+alpha = 0.6
+Also known as the learning rate, alpha serves the purpose of controlling the step taken during gradient descent in order to reach the global minima. Our neural network gave the best performance when alpha is set to 0.6 for the above mentioned layer’s configuration.
+    
+Activation function used : ‘ReLU’
+This parameter corresponds to the type of activation function used at every hidden layer. Since our neural network has functionalities to include activations of both ReLU or tanh, we needed to specify one of them. Although we have implementations for both, we decided to pick ReLU as the amount of computation required was lesser and it provided better results.
+
+Verbose : This parameter has been included by us to print the value of the error/loss function after every epoch. If this parameter is set to 1, then the error is displayed at the end of every epoch, else it isn’t displayed. This parameter is passed as a parameter to the fit function of an object of the NN class.
+
+Lamda : This is the regularization parameter, which is used to calculate the regularization term, which is later added to the value of the error/loss function after every epoch, to prevent overfitting. However, we found that implementing it didn’t really help our neural network as we expected it to, hence we set Lamda to 0.
+
 '''
 
 # Importing the modules
@@ -36,7 +50,7 @@ class NN:
         # Dictionary containing all the Z's and A's of every layer.
         #   Z[i] = W[i].T*A[i-1] + b[i] [TODO]
         #   A[i] = activation(Z[i])
-        self.AandZ = dict()  # [TODO NAME CHANGE]
+        self.layer_output = dict()  # [TODO NAME CHANGE]
 
         # Stores the gradients of the weights for all the layers in a dictionary.
         self.grads = dict()
@@ -133,13 +147,13 @@ class NN:
         '''
 
         # Setting A0 to be the matrix of features X, for simplicity
-        self.AandZ["A0"] = self.X
+        self.layer_output["A0"] = self.X
 
         # L2 regularisation = (lambda)*[ sigma( w[i]*w[i] )]
         # Reg_weights = [sigma( w[i]*w[i] )]
         self.reg_weights = 0 
         for i in range(1, len(self.layers)):
-            self.AandZ[f"Z{i}"] = self.params[f"W{i}"].dot(self.AandZ[f"A{i-1}"]) + self.params[f"b{i}"]
+            self.layer_output[f"Z{i}"] = self.params[f"W{i}"].dot(self.layer_output[f"A{i-1}"]) + self.params[f"b{i}"]
             # Z[i] = W[i].T*A[i-1] + b[i]
             # W[i] is the weights matrix of layer i
             # A[i-1] is the activation values of the previous layer passed as input to the current layer.
@@ -150,11 +164,11 @@ class NN:
             if(i!=(len(self.layers)-1)):
                 # A[i] is the activation of Z[i] , where i refers to a particular layer.
                 # the callback function returns the respective output of the activation function requested by the user.
-                self.AandZ[f"A{i}"] = self.callback(self.AandZ[f"Z{i}"])
+                self.layer_output[f"A{i}"] = self.callback(self.layer_output[f"Z{i}"])
             else:
                 # yhat is the vector of predicted values for each vector in matrix X.
                 # The activation function of the output layer is sigmoid to retrieve a value between 0 and 1 for the entire vector yhat.
-                yhat = self.sigmoid(self.AandZ[f"Z{i}"])
+                yhat = self.sigmoid(self.layer_output[f"Z{i}"])
 
             self.reg_weights += np.sum(np.square(self.params[f"W{i}"]))
 
@@ -200,18 +214,18 @@ class NN:
                       
         for i in range(len(self.layers)-1, 0, -1): #Iterating through each layer 
             if(i ==(len(self.layers)-1) ):
-                sig = self.sigmoid(self.AandZ[f"Z{i}"])
+                sig = self.sigmoid(self.layer_output[f"Z{i}"])
                 self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * sig * (1-sig)
                 #dZ[i] = dA[i] * act(Z[i])'
                 #where act(Z[i])' is the derivative of the activation of Z[i].
             
             else:
                 #der_callback calls the respective deravative_activation function set under NN.__init__ 
-               self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_callback(self.AandZ[f"Z{i}"])
+               self.grads[f"dZ{i}"] = self.grads[f"dA{i}"] * self.der_callback(self.layer_output[f"Z{i}"])
                #dZ[i] = dA[i] * act(Z[i])'
                #where act(Z[i])' is the derivative of the activation of Z[i].
             
-            self.grads[f"dW{i}"] = (1/m) * np.dot(self.grads[f"dZ{i}"], self.AandZ[f"A{i-1}"].T)
+            self.grads[f"dW{i}"] = (1/m) * np.dot(self.grads[f"dZ{i}"], self.layer_output[f"A{i-1}"].T)
             #dW[i] = (1/m) * (dZ[i] . A[i-1](transpose))
             
             self.grads[f"db{i}"] = (1/m) * np.sum(self.grads[f"dZ{i}"], axis = 1, keepdims = True)
